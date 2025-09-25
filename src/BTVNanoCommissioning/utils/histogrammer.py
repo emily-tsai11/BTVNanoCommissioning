@@ -206,7 +206,6 @@ def histogrammer(events, workflow, year="2022", campaign="Summer22"):
         )
         for i in range(4):
             obj_list.append(f"jet{i}")
-
             _hist_dict[f"dr_mujet{i}"] = Hist.Hist(
                 syst_axis, flav_axis, dr_axis, Hist.storage.Weight()
             )
@@ -478,7 +477,7 @@ def histogrammer(events, workflow, year="2022", campaign="Summer22"):
             syst_axis, flav_axis, phi_axis, Hist.storage.Weight()
         )
 
-    ### Common kinematic variables histogram creation
+    ## Common kinematic variables histogram creation
     if "Wc_sf" not in workflow:
         _hist_dict["njet"] = Hist.Hist(syst_axis, n_axis, Hist.storage.Weight())
         if "ctag_tt" in workflow:
@@ -530,7 +529,9 @@ def histogrammer(events, workflow, year="2022", campaign="Summer22"):
             if "mujet" in obj:
                 if "cutbased" in workflow:
                     for tagger in btag_wp_dict[year + "_" + campaign].keys():
-                        for wp in btag_wp_dict[year + "_" + campaign][tagger]["c"].keys():
+                        for wp in btag_wp_dict[year + "_" + campaign][tagger][
+                            "c"
+                        ].keys():
                             if not "No" in wp:
                                 _hist_dict[f"{obj}_pt_{tagger}{wp}"] = Hist.Hist(
                                     syst_axis,
@@ -539,7 +540,6 @@ def histogrammer(events, workflow, year="2022", campaign="Summer22"):
                                     pt_axis,
                                     Hist.storage.Weight(),
                                 )
-
             if "jet" in obj or "soft_l" in obj:
                 if obj == "soft_l":
                     _hist_dict["soft_l_pt"] = Hist.Hist(
@@ -579,7 +579,7 @@ def histogrammer(events, workflow, year="2022", campaign="Summer22"):
             syst_axis, flav_axis, jpt_axis, Hist.storage.Weight()
         )
 
-    ### Btag input variables & PFCands
+    ## Btag input variables & PFCands
     bininfo = definitions()
     for d in bininfo.keys():
         if d not in events.Jet.fields:
@@ -609,8 +609,8 @@ def histogrammer(events, workflow, year="2022", campaign="Summer22"):
                 Hist.storage.Weight(),
             )
 
-    ### JetSVs variables
-    ### FIXME: Commented out JetSV distrobution until btvnano is fixed
+    ## JetSVs variables
+    ## FIXME: Commented out JetSV distrobution until btvnano is fixed
     # SV_bininfo = SV_definitions()
     # for d in SV_bininfo.keys():
     #     ranges = SV_bininfo[d]["manual_ranges"]
@@ -627,7 +627,7 @@ def histogrammer(events, workflow, year="2022", campaign="Summer22"):
     #         Hist.storage.Weight(),
     #     )
 
-    ### discriminators
+    ## Discriminators
     for disc in disc_list:
         if disc not in events.Jet.fields:
             continue
@@ -760,22 +760,24 @@ def histo_writter(pruned_ev, output, weights, systematics, isSyst, SF_map):
         "DeepCSVB",
         "DeepJetB",
         "DeepJetC",
-    ] # exclude b-tag SFs for btag inputs
+    ]  # exclude b-tag SFs for btag inputs
     # define Jet flavor
 
     # Reduce the jet to the correct dimension in the plot
     found4jets = False
     found2jets = False
     for key in output.keys():
-        if "jet3" in key: # Because 0-indexing
+        if "jet3" in key:  # Because 0-indexing
             found4jets = True
             break
-        if "jet1" in key: # Because 0-indexing
+        if "jet1" in key:  # Because 0-indexing
             found2jets = True
     nj = 4 if found4jets else 2 if found2jets else 1
-    if nj != 1: pruned_ev["SelJet"] = pruned_ev.SelJet[:, :nj]
+    if nj != 1:
+        pruned_ev["SelJet"] = pruned_ev.SelJet[:, :nj]
     if "var" in str(ak.type(pruned_ev.SelJet.pt)) and nj == 1:
         pruned_ev.SelJet = pruned_ev.SelJet[:, 0]
+
     if "hadronFlavour" in pruned_ev.SelJet.fields:
         isRealData = False
         genflavor = ak.values_astype(
@@ -802,11 +804,12 @@ def histo_writter(pruned_ev, output, weights, systematics, isSyst, SF_map):
         genflavor = ak.zeros_like(pruned_ev.SelJet.pt, dtype=int)
         if "MuonJet" in pruned_ev.fields:
             smflav = ak.zeros_like(pruned_ev.MuonJet.pt, dtype=int)
+
     # Loop over the systematic variations
     for syst in systematics:
         if isSyst == False and syst != "nominal":
             break
-        # weight modifications for systematics
+        # Weight modifications for systematics
         weight = (
             weights.weight()
             if syst == "nominal" or syst not in list(weights.variations)
@@ -814,7 +817,7 @@ def histo_writter(pruned_ev, output, weights, systematics, isSyst, SF_map):
         )
         # Loop over the histograms
         for histname, h in output.items():
-            # tagger score histograms
+            # Tagger score histograms
             if (
                 "Deep" in histname
                 and "btag" not in histname
@@ -867,7 +870,7 @@ def histo_writter(pruned_ev, output, weights, systematics, isSyst, SF_map):
                             )[0]
                         ),
                     )
-            # leading lepton histograms
+            # Leading lepton histograms
             elif (
                 "hl_" in histname
                 and "hl" in pruned_ev.fields
@@ -878,7 +881,7 @@ def histo_writter(pruned_ev, output, weights, systematics, isSyst, SF_map):
                     flatten(pruned_ev.hl[histname.replace("hl_", "")]),
                     weight=weight,
                 )
-            # subleading lepton histograms
+            # Subleading lepton histograms
             elif (
                 "sl_" in histname
                 and "sl" in pruned_ev.fields
@@ -952,7 +955,6 @@ def histo_writter(pruned_ev, output, weights, systematics, isSyst, SF_map):
                         sel_jet, flav = pruned_ev.SelJet, genflavor
                     else:
                         sel_jet, flav = pruned_ev.SelJet[:, i], genflavor[:, i]
-
                     if str(i) in histname:
                         if "dr_mujet" in histname:
                             h.fill(
@@ -968,7 +970,7 @@ def histo_writter(pruned_ev, output, weights, systematics, isSyst, SF_map):
                                 flatten(sel_jet[histname.replace(f"jet{i}_", "")]),
                                 weight=weight,
                             )
-            # mu-Jets distribution
+            # Mu-jets distribution
             elif "lmujet_" in histname:
                 h.fill(
                     syst,
@@ -976,7 +978,7 @@ def histo_writter(pruned_ev, output, weights, systematics, isSyst, SF_map):
                     flatten(pruned_ev.MuonJet[histname.replace("lmujet_", "")]),
                     weight=weight,
                 )
-            # filled discriminants
+            # Filled discriminants
             elif "btag" in histname or "PNet" in histname:
                 # Events with muon jet
                 if "MuonJet" in pruned_ev.fields:
@@ -984,7 +986,6 @@ def histo_writter(pruned_ev, output, weights, systematics, isSyst, SF_map):
                     nj = 1
                 else:
                     flavs, seljets = genflavor, pruned_ev.SelJet
-
                 for i in range(nj):
                     if not histname.endswith(str(i)):
                         continue
@@ -1016,6 +1017,7 @@ def histo_writter(pruned_ev, output, weights, systematics, isSyst, SF_map):
                 pruned_ev.negl.delta_r(pruned_ev.SelJet),
                 weight=weight,
             )
+
         # Muon enriched jet histograms
         if "MuonJet" in pruned_ev.fields:
             if (
@@ -1074,7 +1076,6 @@ def histo_writter(pruned_ev, output, weights, systematics, isSyst, SF_map):
                     ratio=pruned_ev.sl.pt / pruned_ev.MuonJet.pt,
                     weight=weight,
                 )
-
             if "SelMuon" in pruned_ev.fields and "hl" not in pruned_ev.fields:
                 output["dr_lmujethmu"].fill(
                     syst,
@@ -1085,6 +1086,7 @@ def histo_writter(pruned_ev, output, weights, systematics, isSyst, SF_map):
                 output["dr_hmusmu"].fill(
                     syst, pruned_ev.SelMuon.delta_r(pruned_ev.SoftMuon), weight=weight
                 )
+
         # dilepton system histograms: DY workflow
         if "dilep" in pruned_ev.fields:
             output["dilep_pt"].fill(syst, flatten(pruned_ev.dilep.pt), weight=weight)
