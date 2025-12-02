@@ -74,12 +74,9 @@ def load_SF(year, campaign, syst=False):
         ## pileup weight
         if SF == "LUM":
             ## Check whether files in jsonpog-integration exist
-            if os.path.exists(
-                f"/cvmfs/cms-griddata.cern.ch/cat/metadata/LUM/{campaign_map()[campaign]}/latest/"
-            ):
-                correct_map["LUM"] = correctionlib.CorrectionSet.from_file(
-                    f"/cvmfs/cms-griddata.cern.ch/cat/metadata/LUM/{campaign_map()[campaign]}/latest/puWeights.json.gz"
-                )
+            _pu_path = f"/cvmfs/cms-griddata.cern.ch/cat/metadata/LUM/{campaign_map()[campaign]}/latest/puWeights.json.gz"
+            if os.path.exists(_pu_path):
+                correct_map["LUM"] = correctionlib.CorrectionSet.from_file(_pu_path)
             ## Otherwise custom files
             else:
                 _pu_path = f"BTVNanoCommissioning.data.LUM.{campaign}"

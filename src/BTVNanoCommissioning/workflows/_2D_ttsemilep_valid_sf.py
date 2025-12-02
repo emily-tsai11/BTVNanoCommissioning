@@ -198,8 +198,8 @@ class NanoProcessor(processor.ProcessorABC):
             ]
         )
         req_b_jets = (
-            (wp2D_1 >= WP["mapping"]["B2"]) & (wp2D_1 <= WP["mapping"]["B4"])
-        ) | ((wp2D_2 >= WP["mapping"]["B2"]) & (wp2D_2 <= WP["mapping"]["B4"]))
+            (wp2D_1 >= WP["mapping"]["B1"]) & (wp2D_1 <= WP["mapping"]["B4"])
+        ) | ((wp2D_2 >= WP["mapping"]["B1"]) & (wp2D_2 <= WP["mapping"]["B4"]))
 
         ## Store jet index for PFCands, create mask on the jet index
         jetindx = ak.mask(ak.local_index(events.Jet.pt), jet_sel == True)
@@ -291,7 +291,7 @@ class NanoProcessor(processor.ProcessorABC):
                 ]
             )
             nbjet = np.where(
-                ((wp2D >= WP["mapping"]["B2"]) & (wp2D <= WP["mapping"]["B4"])), 1, 0
+                ((wp2D >= WP["mapping"]["B1"]) & (wp2D <= WP["mapping"]["B4"])), 1, 0
             )
             ncjet = np.where(
                 ((wp2D >= WP["mapping"]["C1"]) & (wp2D <= WP["mapping"]["C4"])), 1, 0
