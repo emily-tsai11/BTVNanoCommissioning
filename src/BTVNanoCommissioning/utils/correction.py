@@ -1463,7 +1463,9 @@ def btagSFs(event, correct_map, weights, SFtype, syst=False):
                     )
                 elif SFtype == "UParTAK4C":
                     jet_2DWP = event[f"btagUParTAK42D_{nj}"]  # L0
-                    jet_2DWP = [0 if wp == -1 else wp for wp in jet_2DWP]  # Like replacing Nones
+                    jet_2DWP = [
+                        0 if wp == -1 else wp for wp in jet_2DWP
+                    ]  # Like replacing Nones
                     jet_2DWP = [40 if wp == 1 else wp for wp in jet_2DWP]  # C0
                     jet_2DWP = [41 if wp == 2 else wp for wp in jet_2DWP]  # C1
                     jet_2DWP = [42 if wp == 3 else wp for wp in jet_2DWP]  # C2
