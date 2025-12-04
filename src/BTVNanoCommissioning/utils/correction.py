@@ -74,12 +74,9 @@ def load_SF(year, campaign, syst=False):
         ## pileup weight
         if SF == "LUM":
             ## Check whether files in jsonpog-integration exist
-            if os.path.exists(
-                f"/cvmfs/cms-griddata.cern.ch/cat/metadata/LUM/{campaign_map()[campaign]}/latest/"
-            ):
-                correct_map["LUM"] = correctionlib.CorrectionSet.from_file(
-                    f"/cvmfs/cms-griddata.cern.ch/cat/metadata/LUM/{campaign_map()[campaign]}/latest/puWeights.json.gz"
-                )
+            _pu_path = f"/cvmfs/cms-griddata.cern.ch/cat/metadata/LUM/{campaign_map()[campaign]}/latest/puWeights.json.gz"
+            if os.path.exists(_pu_path):
+                correct_map["LUM"] = correctionlib.CorrectionSet.from_file(_pu_path)
             ## Otherwise custom files
             else:
                 _pu_path = f"BTVNanoCommissioning.data.LUM.{campaign}"
@@ -1466,6 +1463,9 @@ def btagSFs(event, correct_map, weights, SFtype, syst=False):
                     )
                 elif SFtype == "UParTAK4C":
                     jet_2DWP = event[f"btagUParTAK42D_{nj}"]  # L0
+                    jet_2DWP = [
+                        0 if wp == -1 else wp for wp in jet_2DWP
+                    ]  # Like replacing Nones
                     jet_2DWP = [40 if wp == 1 else wp for wp in jet_2DWP]  # C0
                     jet_2DWP = [41 if wp == 2 else wp for wp in jet_2DWP]  # C1
                     jet_2DWP = [42 if wp == 3 else wp for wp in jet_2DWP]  # C2

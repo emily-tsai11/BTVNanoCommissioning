@@ -13,18 +13,20 @@ errband_opts = {
 }
 markers = [".", "o", "^", "s", "+", "x", "D", "*"]
 color_map = {
-    "VV": "#7f3c8d",
-    "Z+jets": "#e68310",
-    "W+jets": "#80ba5a",
-    "QCD": "#e73f74",
-    "QCD($\\mu$)": "#a5aa99",
-    "Single top": "#3969ac",
-    "$t\\bar{t}$": "#008695",
-    "tt+X": "#bd1f01",
-    "udsg": "tab:blue",
-    "pu": "tab:orange",
-    "c": "tab:green",
-    "b": "tab:red",
+    # https://cms-analysis.docs.cern.ch/guidelines/plotting/colors/
+    "$t\\bar{t}$": "#86c8dd",
+    "Single top": "#578dff",
+    "tt+X": "#1845fb",
+    "VV": "#c91f16",
+    "W+jets": "#c849a9",
+    "Z+jets": "#ff5e02",
+    "QCD": "#adad7d",
+    "QCD($\\mu$)": "#656364",
+    # https://btvweb.web.cern.ch/artworks/BTV_colorpalette/Palette.png
+    "udsg": "#15a3ef",  # blue
+    "pu": "#717581",  # grey
+    "c": "#ed1e02",  # red
+    "b": "#fcb302",  # yellow
 }
 sample_mergemap = {
     # diboson
