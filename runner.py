@@ -171,7 +171,7 @@ def get_event_weights(sample_dict, output):
             genEventSumw = 0.0
             LHEScaleSumw = np.full(9, 0.0)
             LHEPdfSumw = np.full(103, 0.0)
-            PSSumw = np.full(4, 0.0)
+            #PSSumw = np.full(4, 0.0)
         for fname in sample_dict[sample]:
             with uproot.open(fname) as root_file:
                 if isRealData:
@@ -181,14 +181,14 @@ def get_event_weights(sample_dict, output):
                     genEventSumw += temp_genEventSumw
                     LHEScaleSumw += ak.to_numpy(deepcopy(root_file["Runs"]["LHEScaleSumw"].array()[0])) * temp_genEventSumw
                     LHEPdfSumw += ak.to_numpy(deepcopy(root_file["Runs"]["LHEPdfSumw"].array()[0])) * temp_genEventSumw
-                    PSSumw += ak.to_numpy(deepcopy(root_file["Runs"]["PSSumw"].array()[0])) * temp_genEventSumw
+                    #PSSumw += ak.to_numpy(deepcopy(root_file["Runs"]["PSSumw"].array()[0])) * temp_genEventSumw
         if isRealData:
             output[sample]["sumw"] = genEventCount
         else:
             output[sample]["sumw"] = genEventSumw
             output[sample]["LHEScaleSumw"] = list(LHEScaleSumw)
             output[sample]["LHEPdfSumw"] = list(LHEPdfSumw)
-            output[sample]["PSSumw"] = list(PSSumw)
+            #output[sample]["PSSumw"] = list(PSSumw)
     return output
 
 
