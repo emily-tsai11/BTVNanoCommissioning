@@ -143,7 +143,7 @@ def missing_branch(events, campaign="2024_Summer24"):
             {"btagRobustParTAK4CvNotB": jets.btagRobustParTAK4CvNotB},
         )
     # Add UParTAK4-like derived variables for multiple taggers
-    for tagger in ("UParTAK4", "MyUParTAK4"):
+    for tagger in ("DeepFlav", "PNet", "UParTAK4", "MyUParTAK4"):
         # --- BvC and pT-binned versions (from CvB) ---
         bvc_name = f"btag{tagger}BvC"
         cvb_name = f"btag{tagger}CvB"
@@ -182,69 +182,113 @@ def missing_branch(events, campaign="2024_Summer24"):
 
         # --- HFvLF and pT-binned versions (from UDG, SvUDG, CvL, CvB) ---
         hfvlf_name = f"btag{tagger}HFvLF"
-        if (
-            not hasattr(events.Jet, hfvlf_name)
-            and hasattr(events.Jet, f"btag{tagger}UDG")
-            and hasattr(events.Jet, f"btag{tagger}SvUDG")
-            and hasattr(events.Jet, f"btag{tagger}CvL")
-            and hasattr(events.Jet, f"btag{tagger}CvB")
-        ):
-            jets = events.Jet
-            udg = jets[f"btag{tagger}UDG"]
-            svudg = jets[f"btag{tagger}SvUDG"]
-            cvl = jets[f"btag{tagger}CvL"]
-            cvb = jets[f"btag{tagger}CvB"]
+        if "UParTAK4" in tagger:
+            if (
+                not hasattr(events.Jet, hfvlf_name)
+                and hasattr(events.Jet, f"btag{tagger}UDG")
+                and hasattr(events.Jet, f"btag{tagger}SvUDG")
+                and hasattr(events.Jet, f"btag{tagger}CvL")
+                and hasattr(events.Jet, f"btag{tagger}CvB")
+            ):
+                jets = events.Jet
+                udg = jets[f"btag{tagger}UDG"]
+                svudg = jets[f"btag{tagger}SvUDG"]
+                cvl = jets[f"btag{tagger}CvL"]
+                cvb = jets[f"btag{tagger}CvB"]
 
-            jets[f"btag{tagger}S"] = ak.where(
-                svudg < 0.0,
-                -1,
-                svudg * udg / (1.0 - svudg),
-            )
-            jets[f"btag{tagger}C"] = ak.where(
-                svudg < 0.0,
-                -1,
-                cvl * (jets[f"btag{tagger}S"] + udg) / (1.0 - cvl),
-            )
-            jets[f"btag{tagger}B"] = ak.where(
-                svudg < 0.0,
-                -1,
-                (1.0 - cvb) * jets[f"btag{tagger}C"] / cvb,
-            )
-            jets[hfvlf_name] = ak.where(
-                svudg < 0.0,
-                -1,
-                (jets[f"btag{tagger}B"] + jets[f"btag{tagger}C"])
-                / (
-                    jets[f"btag{tagger}B"]
-                    + jets[f"btag{tagger}C"]
-                    + jets[f"btag{tagger}S"]
-                    + udg
-                ),
-            )
-            jets[f"{hfvlf_name}t"] = ak.where(
-                jets[hfvlf_name] < 0.0,
-                -1,
-                1.0 - np.sqrt(1.0 - jets[hfvlf_name]),
-            )
+                jets[f"btag{tagger}S"] = ak.where(
+                    svudg < 0.0,
+                    -1,
+                    svudg * udg / (1.0 - svudg),
+                )
+                jets[f"btag{tagger}C"] = ak.where(
+                    svudg < 0.0,
+                    -1,
+                    cvl * (jets[f"btag{tagger}S"] + udg) / (1.0 - cvl),
+                )
+                jets[f"btag{tagger}B"] = ak.where(
+                    svudg < 0.0,
+                    -1,
+                    (1.0 - cvb) * jets[f"btag{tagger}C"] / cvb,
+                )
+                jets[hfvlf_name] = ak.where(
+                    svudg < 0.0,
+                    -1,
+                    (jets[f"btag{tagger}B"] + jets[f"btag{tagger}C"])
+                    / (
+                        jets[f"btag{tagger}B"]
+                        + jets[f"btag{tagger}C"]
+                        + jets[f"btag{tagger}S"]
+                        + udg
+                    ),
+                )
+                jets[f"{hfvlf_name}t"] = ak.where(
+                    jets[hfvlf_name] < 0.0,
+                    -1,
+                    1.0 - np.sqrt(1.0 - jets[hfvlf_name]),
+                )
 
-            for lo, hi in ((25.0, 35.0), (35.0, 50.0), (50.0, 70.0), (70.0, 90.0), (90.0, 120.0)):
-                jets[f"{hfvlf_name}_pt{int(lo)}to{int(hi)}"] = ak.where(
-                    (jets.pt < lo) | (jets.pt >= hi),
+                for lo, hi in ((25.0, 35.0), (35.0, 50.0), (50.0, 70.0), (70.0, 90.0), (90.0, 120.0)):
+                    jets[f"{hfvlf_name}_pt{int(lo)}to{int(hi)}"] = ak.where(
+                        (jets.pt < lo) | (jets.pt >= hi),
+                        -2,
+                        jets[hfvlf_name],
+                    )
+                jets[f"{hfvlf_name}_pt120toinf"] = ak.where(
+                    jets.pt < 120.0,
                     -2,
                     jets[hfvlf_name],
                 )
-            jets[f"{hfvlf_name}_pt120toinf"] = ak.where(
-                jets.pt < 120.0,
-                -2,
-                jets[hfvlf_name],
-            )
 
-            update_map = {hfvlf_name: jets[hfvlf_name], f"{hfvlf_name}t": jets[f"{hfvlf_name}t"]}
-            for lo, hi in ((25, 35), (35, 50), (50, 70), (70, 90), (90, 120)):
-                update_map[f"{hfvlf_name}_pt{lo}to{hi}"] = jets[f"{hfvlf_name}_pt{lo}to{hi}"]
-            update_map[f"{hfvlf_name}_pt120toinf"] = jets[f"{hfvlf_name}_pt120toinf"]
+                update_map = {hfvlf_name: jets[hfvlf_name], f"{hfvlf_name}t": jets[f"{hfvlf_name}t"]}
+                for lo, hi in ((25, 35), (35, 50), (50, 70), (70, 90), (90, 120)):
+                    update_map[f"{hfvlf_name}_pt{lo}to{hi}"] = jets[f"{hfvlf_name}_pt{lo}to{hi}"]
+                update_map[f"{hfvlf_name}_pt120toinf"] = jets[f"{hfvlf_name}_pt120toinf"]
 
-            events.Jet = update(events.Jet, update_map)
+                events.Jet = update(events.Jet, update_map)
+        elif tagger in ("DeepFlav", "PNet"):
+            if (
+                not hasattr(events.Jet, hfvlf_name)
+                and hasattr(events.Jet, f"btag{tagger}B")
+                and hasattr(events.Jet, f"btag{tagger}CvL")
+            ):
+                jets = events.Jet
+                b = jets[f"btag{tagger}B"]
+                cvl = jets[f"btag{tagger}CvL"]
+                jets[f"btag{tagger}C"] = ak.where(
+                    b < 0.0,
+                    -1,
+                    cvl * (1 - b),
+                )
+                jets[hfvlf_name] = ak.where(
+                    b < 0.0,
+                    -1,
+                    (b + jets[f"btag{tagger}C"]),
+                )
+                jets[f"{hfvlf_name}t"] = ak.where(
+                    jets[hfvlf_name] < 0.0,
+                    -1,
+                    1.0 - np.sqrt(1.0 - jets[hfvlf_name]),
+                )
+
+                for lo, hi in ((25.0, 35.0), (35.0, 50.0), (50.0, 70.0), (70.0, 90.0), (90.0, 120.0)):
+                    jets[f"{hfvlf_name}_pt{int(lo)}to{int(hi)}"] = ak.where(
+                        (jets.pt < lo) | (jets.pt >= hi),
+                        -2,
+                        jets[hfvlf_name],
+                    )
+                jets[f"{hfvlf_name}_pt120toinf"] = ak.where(
+                    jets.pt < 120.0,
+                    -2,
+                    jets[hfvlf_name],
+                )
+
+                update_map = {hfvlf_name: jets[hfvlf_name], f"{hfvlf_name}t": jets[f"{hfvlf_name}t"]}
+                for lo, hi in ((25, 35), (35, 50), (50, 70), (70, 90), (90, 120)):
+                    update_map[f"{hfvlf_name}_pt{lo}to{hi}"] = jets[f"{hfvlf_name}_pt{lo}to{hi}"]
+                update_map[f"{hfvlf_name}_pt120toinf"] = jets[f"{hfvlf_name}_pt120toinf"]
+
+                events.Jet = update(events.Jet, update_map)
 
         # --- 2D bin and pT-binned versions (from HFvLF and BvC) ---
         bin2d_name = f"btag{tagger}2Dbin"
