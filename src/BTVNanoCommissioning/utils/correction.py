@@ -88,9 +88,8 @@ def load_SF(year, campaign, selMod="default", syst=False):
     conf = copy.copy(config[campaign]["default"])
     if selMod != "default":
         if selMod in config[campaign].keys():
-            for key in conf.keys():
-                if key in config[campaign][selMod].keys():
-                    conf[key] = copy.copy(config[campaign][selMod][key])
+            for key in config[campaign][selMod].keys():
+                conf[key] = copy.copy(config[campaign][selMod][key])
 
     for SF in conf.keys():
         if SF == "DC":
@@ -186,41 +185,20 @@ def load_SF(year, campaign, selMod="default", syst=False):
                                 )
 
         ## lepton SFs
-        elif SF == "MUO" or SF == "EGM":
+        elif SF == "MUO":
             correct_map["MUO_cfg"] = {
                 mu: f
                 for mu, f in conf["MUO"].items()
                 if "mu" in mu and "_json" not in mu
             }
-            correct_map["EGM_cfg"] = {
-                e: f for e, f in conf["EGM"].items() if "ele" in e and "_json" not in e
-            }
-            ## muon
             _muo_cvmfs = _cvmfs_dir(campaign, "MUO")
             _mu_path = f"/cvmfs/cms-griddata.cern.ch/cat/metadata/MUO/{_muo_cvmfs}/latest/muon_Z.json.gz"
             if os.path.exists(_mu_path):
                 correct_map["MUO"] = correctionlib.CorrectionSet.from_file(_mu_path)
-            ## electron
-            _egm_cvmfs = _cvmfs_dir(campaign, "EGM")
-            for _ele_file, _ele_map in {
-                "electron": "EGM",
-                "electronHlt": "EGM_HLT",
-            }.items():
-                _ele_path = f"/cvmfs/cms-griddata.cern.ch/cat/metadata/EGM/{_egm_cvmfs}/latest/{_ele_file}.json.gz"
-                if not os.path.exists(_ele_path):
-                    _ele_path = f"src/BTVNanoCommissioning/data/EGM/{_egm_cvmfs}/latest/{_ele_file}.json.gz"
-                if os.path.exists(_ele_path):
-                    correct_map[_ele_map] = correctionlib.CorrectionSet.from_file(
-                        _ele_path
-                    )
             ## json
             if any(np.char.find(np.array(list(conf["MUO"].keys())), "mu_json") != -1):
                 correct_map["MUO"] = correctionlib.CorrectionSet.from_file(
                     f"src/BTVNanoCommissioning/data/MUO/{_muo_cvmfs}/latest/{conf['MUO']['mu_json']}"
-                )
-            if any(np.char.find(np.array(list(conf["EGM"].keys())), "ele_json") != -1):
-                correct_map["EGM"] = correctionlib.CorrectionSet.from_file(
-                    f"src/BTVNanoCommissioning/data/EGM/{_egm_cvmfs}/latest/{conf['EGM']['ele_json']}"
                 )
 
             ## check if any custom corrections needed
@@ -229,9 +207,6 @@ def load_SF(year, campaign, selMod="default", syst=False):
                 "histo.json" in "\t".join(list(conf["MUO"].values()))
                 or "histo.txt" in "\t".join(list(conf["MUO"].values()))
                 or "histo.root" in "\t".join(list(conf["MUO"].values()))
-                or "histo.json" in "\t".join(list(conf["EGM"].values()))
-                or "histo.txt" in "\t".join(list(conf["EGM"].values()))
-                or "histo.root" in "\t".join(list(conf["EGM"].values()))
             ):
                 _mu_path = f"BTVNanoCommissioning.data.MUO.{campaign}"
                 ext = extractor()
@@ -276,7 +251,35 @@ def load_SF(year, campaign, selMod="default", syst=False):
                         )
                 ext.finalize()
                 correct_map["MUO_custom"] = ext.make_evaluator()
+        elif SF == "EGM":
+            correct_map["EGM_cfg"] = {
+                e: f for e, f in conf["EGM"].items() if "ele" in e and "_json" not in e
+            }
+            _egm_cvmfs = _cvmfs_dir(campaign, "EGM")
+            for _ele_file, _ele_map in {
+                "electron": "EGM",
+                "electronHlt": "EGM_HLT",
+            }.items():
+                _ele_path = f"/cvmfs/cms-griddata.cern.ch/cat/metadata/EGM/{_egm_cvmfs}/latest/{_ele_file}.json.gz"
+                if not os.path.exists(_ele_path):
+                    _ele_path = f"src/BTVNanoCommissioning/data/EGM/{_egm_cvmfs}/latest/{_ele_file}.json.gz"
+                if os.path.exists(_ele_path):
+                    correct_map[_ele_map] = correctionlib.CorrectionSet.from_file(
+                        _ele_path
+                    )
+            ## json
+            if any(np.char.find(np.array(list(conf["EGM"].keys())), "ele_json") != -1):
+                correct_map["EGM"] = correctionlib.CorrectionSet.from_file(
+                    f"src/BTVNanoCommissioning/data/EGM/{_egm_cvmfs}/latest/{conf['EGM']['ele_json']}"
+                )
 
+            ## check if any custom corrections needed
+            # FIXME: (some low pT muons not supported in CMS analysis corrections at the moment)
+            if (
+                "histo.json" in "\t".join(list(conf["EGM"].values()))
+                or "histo.txt" in "\t".join(list(conf["EGM"].values()))
+                or "histo.root" in "\t".join(list(conf["EGM"].values()))
+            ):
                 _ele_path = f"BTVNanoCommissioning.data.EGM.{campaign}"
                 ext = extractor()
                 with contextlib.ExitStack() as stack:
@@ -326,7 +329,7 @@ def load_SF(year, campaign, selMod="default", syst=False):
                 correct_map["muonSS"] = correctionlib.CorrectionSet.from_file(_mu_path)
         elif SF == "electronSS":
             _eless_cvmfs = _cvmfs_dir(campaign, "electronSS")
-            _ele_path = f"/cvmfs/cms-griddata.cern.ch/cat/metadata/EGM/{_eless_cvmfs}/latest/electronSS_EtDependent{'_v1' if year == '2024' else ''}.json.gz"
+            _ele_path = f"/cvmfs/cms-griddata.cern.ch/cat/metadata/EGM/{_eless_cvmfs}/latest/electronSS_EtDependent.json.gz"
             if not os.path.exists(_ele_path):
                 _ele_path = f"src/BTVNanoCommissioning/data/EGM/{_eless_cvmfs}/latest/electronSS_EtDependent.json.gz"
             if os.path.exists(_ele_path):

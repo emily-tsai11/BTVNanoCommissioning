@@ -18,10 +18,10 @@ from BTVNanoCommissioning.utils.array_writer import array_writer
 from BTVNanoCommissioning.utils.selection import (
     HLT_helper,
     jet_id,
-    # mu_idiso,
     mu_promptmvaid,
-    # ele_mvatightid,
     ele_promptmvaid,
+    mu_idiso,
+    ele_mvatightid,
     MET_filters,
     btag_wp,
 )
@@ -132,13 +132,23 @@ class NanoProcessor(processor.ProcessorABC):
 
         ## Lepton cuts
         if self.selMod == "semittE_2D":
-            event_iso_lep = events.Electron[
-                (events.Electron.pt > 32) & ele_promptmvaid(events, self._campaign)
-            ]
+            if self._campaign in ["Summer24", "Winter25", "Prompt25"]:  # NanoAODv15
+                event_iso_lep = events.Electron[
+                    (events.Electron.pt > 32) & ele_promptmvaid(events, self._campaign)
+                ]
+            else:
+                event_iso_lep = events.Electron[
+                    (events.Electron.pt > 32) & ele_mvatightid(events, self._campaign)
+                ]
         elif self.selMod == "semittM_2D":
-            event_iso_lep = events.Muon[
-                (events.Muon.pt > 26) & mu_promptmvaid(events, self._campaign)
-            ]
+            if self._campaign in ["Summer24", "Winter25", "Prompt25"]:  # NanoAODv15
+                event_iso_lep = events.Muon[
+                    (events.Muon.pt > 26) & mu_promptmvaid(events, self._campaign)
+                ]
+            else:
+                event_iso_lep = events.Muon[
+                    (events.Muon.pt > 26) & mu_idiso(events, self._campaign)
+                ]
             event_soft_mu = events.Muon[
                 (events.Muon.pt > 5)
                 & (abs(events.Muon.eta) < 2.5)
