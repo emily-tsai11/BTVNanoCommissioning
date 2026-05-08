@@ -434,21 +434,21 @@ correction_config = {
                 "Run2025G": "Winter25Prompt25_V3",
             },
             "jetveto": {"Winter25Prompt25_RunCDEFG_V1": "jetvetomap"},
-            "MUO": {
-                "mu_ID": "NUM_TightID_DEN_TrackerMuons",
-                "mu_Iso": "NUM_TightPFIso_DEN_TightID",
-            },
-            "EGM": {
-                "ele_Reco 2024 Electron-ID-SF": "",
-                "ele_ID 2024 Electron-ID-SF": "wp80iso",
-            },
+            # "MUO": {
+            #     "mu_ID": "NUM_TightID_DEN_TrackerMuons",
+            #     "mu_Iso": "NUM_TightPFIso_DEN_TightID",
+            # },
+            # "EGM": {
+            #     "ele_Reco 2024 Electron-ID-SF": "",
+            #     "ele_ID 2024 Electron-ID-SF": "wp80iso",
+            # },
             # Muon scale & smearing: reuse 2024 from Run3-24CDE...Summer24
-            "muonSS": "",
+            # "muonSS": "",
             # Electron scale & smearing: use 2025 SaS from Run3-25Prompt-Summer24
-            "electronSS": [
-                "Scale",
-                "SmearAndSyst",
-            ],
+            # "electronSS": [
+            #     "Scale",
+            #     "SmearAndSyst",
+            # ],
             # Per-POG CVMFS path overrides.
             # JME: data L2L3Residual from Winter25 JME era.
             # JME_MC: MC truth JECs must come from the Summer24 era (L2Relative differs).
