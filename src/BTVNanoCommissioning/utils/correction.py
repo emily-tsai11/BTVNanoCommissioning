@@ -129,29 +129,29 @@ def load_SF(year, campaign, selMod="default", syst=False):
             if "btag" in conf["BTV"].keys() and conf["BTV"]["btag"].endswith(
                 ".json.gz"
             ):
+                filename = conf["BTV"]["btag"]
                 correct_map["btag"] = correctionlib.CorrectionSet.from_file(
-                    importlib.resources.path(
-                        f"BTVNanoCommissioning.data.BTV.{campaign}", filename
-                    )
+                    f"{os.getcwd()}/src/BTVNanoCommissioning/data/BTV/{campaign}/{filename}"
                 )
             if "ctag" in conf["BTV"].keys() and conf["BTV"]["ctag"].endswith(
                 ".json.gz"
             ):
-                correct_map["btag"] = correctionlib.CorrectionSet.from_file(
-                    importlib.resources.path(
-                        f"BTVNanoCommissioning.data.BTV.{campaign}", filename
-                    )
+                filename = conf["BTV"]["ctag"]
+                correct_map["ctag"] = correctionlib.CorrectionSet.from_file(
+                    f"{os.getcwd()}/src/BTVNanoCommissioning/data/BTV/{campaign}/{filename}"
                 )
             _btv_cvmfs = _cvmfs_dir(campaign, "BTV")
             if os.path.exists(
                 f"/cvmfs/cms-griddata.cern.ch/cat/metadata/BTV/{_btv_cvmfs}/latest/"
             ):
-                correct_map["btag"] = correctionlib.CorrectionSet.from_file(
-                    f"/cvmfs/cms-griddata.cern.ch/cat/metadata/BTV/{_btv_cvmfs}/latest/btagging.json.gz"
-                )
-                correct_map["ctag"] = correctionlib.CorrectionSet.from_file(
-                    f"/cvmfs/cms-griddata.cern.ch/cat/metadata/BTV/{_btv_cvmfs}/latest/ctagging.json.gz"
-                )
+                if "btag" not in correct_map.keys():
+                    correct_map["btag"] = correctionlib.CorrectionSet.from_file(
+                        f"/cvmfs/cms-griddata.cern.ch/cat/metadata/BTV/{_btv_cvmfs}/latest/btagging.json.gz"
+                    )
+                if "ctag" not in correct_map.keys():
+                    correct_map["ctag"] = correctionlib.CorrectionSet.from_file(
+                        f"/cvmfs/cms-griddata.cern.ch/cat/metadata/BTV/{_btv_cvmfs}/latest/ctagging.json.gz"
+                    )
             else:
                 correct_map["btag"] = {}
                 correct_map["ctag"] = {}
@@ -2030,7 +2030,7 @@ def btagSFs(event, correct_map, weights, SFtype, syst=False):
     event (dict): A dictionary containing the properties of the event.
     correct_map (dict): A dictionary containing correction factors and settings for b-tagging scale factors.x
     weights (coffea.weight.Weight): An instance of coffea's Weight class to store the calculated weights.
-    SFtype (str): The type of scale factor to apply. Only shape-based C, B are supported.
+    SFtype (str): The type of scale factor to apply. Only shape-based C, B and 2D pseudocontinuous BC are supported.
     syst (bool, optional): A flag to indicate whether to apply systematic variations. Default is False.
 
     Returns:
@@ -2041,7 +2041,296 @@ def btagSFs(event, correct_map, weights, SFtype, syst=False):
     ValueError: If the SFtype is not recognized or supported.
     """
     jet = event.SelJet
-    if SFtype.endswith("C"):
+    if SFtype.endswith("BC"):
+        systlist = [
+            "PUWeight",
+            "JESRegrouped_Absolute",
+            "JESRegrouped_Absolute_2024",
+            "JESRegrouped_BBEC1",
+            "JESRegrouped_BBEC1_2024",
+            "JESRegrouped_EC2",
+            "JESRegrouped_EC2_2024",
+            "JESRegrouped_FlavorQCD",
+            "JESRegrouped_HF",
+            "JESRegrouped_HF_2024",
+            "JESRegrouped_RelativeBal",
+            "JESRegrouped_RelativeSample_2024",
+            # "JESTotal",
+            "JEReta0to1p93",
+            "JEReta1p93to2p5",
+            # "JERTotal",
+            "MET_UnclEnergy",
+            "Ele_Reco",
+            "Ele_ID",
+            # "Ele_Trigger",
+            "Ele_Trigger_Shape",
+            "Ele_Trigger_lnN",
+            "Ele_Scale",
+            "Ele_Smear",
+            "Mu_ID",
+            "Mu_Iso",
+            # "Mu_Trigger",
+            "Mu_Trigger_Shape",
+            "Mu_Trigger_lnN",
+            "Mu_Scale",
+            "Mu_Resol",
+            "TTWeight_ttbar",
+            "LHEScaleWeight_PDF_ttbar",
+            "LHEScaleWeight_PDF_singlet",
+            "LHEScaleWeight_PDF_wjets",
+            "LHEScaleWeight_PDF_zjets",
+            "LHEScaleWeight_PDF_diboson",
+            "LHEScaleWeight_aS_ttbar",
+            "LHEScaleWeight_aS_singlet",
+            "LHEScaleWeight_aS_wjets",
+            "LHEScaleWeight_aS_zjets",
+            "LHEScaleWeight_aS_diboson",
+            "LHEScaleWeight_muF_ttbar",
+            "LHEScaleWeight_muF_singlet",
+            "LHEScaleWeight_muF_wjets",
+            "LHEScaleWeight_muF_zjets",
+            "LHEScaleWeight_muF_diboson",
+            "LHEScaleWeight_muR_ttbar",
+            "LHEScaleWeight_muR_singlet",
+            "LHEScaleWeight_muR_wjets",
+            "LHEScaleWeight_muR_zjets",
+            "LHEScaleWeight_muR_diboson",
+            "PSWeightFSR_ttbar",
+            "PSWeightFSR_singlet",
+            "PSWeightFSR_wjets",
+            "PSWeightFSR_zjets",
+            "PSWeightFSR_diboson",
+            "PSWeightISR_ttbar",
+            "PSWeightISR_singlet",
+            "PSWeightISR_wjets",
+            "PSWeightISR_zjets",
+            "PSWeightISR_diboson",
+            "XSec_ZJets_c",
+            "XSec_ZJets_b",
+            "XSec_WJets_c",
+            "XSec_WJets_b",
+            "XSec_ttbar",
+            "XSec_singlet_tW",
+            "XSec_singlet_tCh",
+            "XSec_VV",
+            "Lumi_13p6TeV_2024",
+            # "Stat_flavB_B0_eta_0p00toinf_pt_25to35",
+            # "Stat_flavB_B0_eta_0p00toinf_pt_35to50",
+            # "Stat_flavB_B0_eta_0p00toinf_pt_50to70",
+            # "Stat_flavB_B0_eta_0p00toinf_pt_70to90",
+            # "Stat_flavB_B0_eta_0p00toinf_pt_90to120",
+            # "Stat_flavB_B0_eta_0p00toinf_pt_120toinf",
+            # "Stat_flavB_B1_eta_0p00toinf_pt_25to35",
+            # "Stat_flavB_B1_eta_0p00toinf_pt_35to50",
+            # "Stat_flavB_B1_eta_0p00toinf_pt_50to70",
+            # "Stat_flavB_B1_eta_0p00toinf_pt_70to90",
+            # "Stat_flavB_B1_eta_0p00toinf_pt_90to120",
+            # "Stat_flavB_B1_eta_0p00toinf_pt_120toinf",
+            # "Stat_flavB_B2_eta_0p00toinf_pt_25to35",
+            # "Stat_flavB_B2_eta_0p00toinf_pt_35to50",
+            # "Stat_flavB_B2_eta_0p00toinf_pt_50to70",
+            # "Stat_flavB_B2_eta_0p00toinf_pt_70to90",
+            # "Stat_flavB_B2_eta_0p00toinf_pt_90to120",
+            # "Stat_flavB_B2_eta_0p00toinf_pt_120toinf",
+            # "Stat_flavB_B3_eta_0p00toinf_pt_25to35",
+            # "Stat_flavB_B3_eta_0p00toinf_pt_35to50",
+            # "Stat_flavB_B3_eta_0p00toinf_pt_50to70",
+            # "Stat_flavB_B3_eta_0p00toinf_pt_70to90",
+            # "Stat_flavB_B3_eta_0p00toinf_pt_90to120",
+            # "Stat_flavB_B3_eta_0p00toinf_pt_120toinf",
+            # "Stat_flavB_B4_eta_0p00toinf_pt_25to35",
+            # "Stat_flavB_B4_eta_0p00toinf_pt_35to50",
+            # "Stat_flavB_B4_eta_0p00toinf_pt_50to70",
+            # "Stat_flavB_B4_eta_0p00toinf_pt_70to90",
+            # "Stat_flavB_B4_eta_0p00toinf_pt_90to120",
+            # "Stat_flavB_B4_eta_0p00toinf_pt_120toinf",
+            # "Stat_flavB_C0_eta_0p00toinf_pt_25to35",
+            # "Stat_flavB_C0_eta_0p00toinf_pt_35to50",
+            # "Stat_flavB_C0_eta_0p00toinf_pt_50to70",
+            # "Stat_flavB_C0_eta_0p00toinf_pt_70to90",
+            # "Stat_flavB_C0_eta_0p00toinf_pt_90to120",
+            # "Stat_flavB_C0_eta_0p00toinf_pt_120toinf",
+            # "Stat_flavB_C1_eta_0p00toinf_pt_25to35",
+            # "Stat_flavB_C1_eta_0p00toinf_pt_35to50",
+            # "Stat_flavB_C1_eta_0p00toinf_pt_50to70",
+            # "Stat_flavB_C1_eta_0p00toinf_pt_70to90",
+            # "Stat_flavB_C1_eta_0p00toinf_pt_90to120",
+            # "Stat_flavB_C1_eta_0p00toinf_pt_120toinf",
+            # "Stat_flavB_C2_eta_0p00toinf_pt_25to35",
+            # "Stat_flavB_C2_eta_0p00toinf_pt_35to50",
+            # "Stat_flavB_C2_eta_0p00toinf_pt_50to70",
+            # "Stat_flavB_C2_eta_0p00toinf_pt_70to90",
+            # "Stat_flavB_C2_eta_0p00toinf_pt_90to120",
+            # "Stat_flavB_C2_eta_0p00toinf_pt_120toinf",
+            # "Stat_flavB_C3_eta_0p00toinf_pt_25to35",
+            # "Stat_flavB_C3_eta_0p00toinf_pt_35to50",
+            # "Stat_flavB_C3_eta_0p00toinf_pt_50to70",
+            # "Stat_flavB_C3_eta_0p00toinf_pt_70to90",
+            # "Stat_flavB_C3_eta_0p00toinf_pt_90to120",
+            # "Stat_flavB_C3_eta_0p00toinf_pt_120toinf",
+            # "Stat_flavB_C4_eta_0p00toinf_pt_25to35",
+            # "Stat_flavB_C4_eta_0p00toinf_pt_35to50",
+            # "Stat_flavB_C4_eta_0p00toinf_pt_50to70",
+            # "Stat_flavB_C4_eta_0p00toinf_pt_70to90",
+            # "Stat_flavB_C4_eta_0p00toinf_pt_90to120",
+            # "Stat_flavB_C4_eta_0p00toinf_pt_120toinf",
+            # "Stat_flavC_B0_eta_0p00toinf_pt_25to35",
+            # "Stat_flavC_B0_eta_0p00toinf_pt_35to50",
+            # "Stat_flavC_B0_eta_0p00toinf_pt_50to70",
+            # "Stat_flavC_B0_eta_0p00toinf_pt_70to90",
+            # "Stat_flavC_B0_eta_0p00toinf_pt_90to120",
+            # "Stat_flavC_B0_eta_0p00toinf_pt_120toinf",
+            # "Stat_flavC_B1_eta_0p00toinf_pt_25to35",
+            # "Stat_flavC_B1_eta_0p00toinf_pt_35to50",
+            # "Stat_flavC_B1_eta_0p00toinf_pt_50to70",
+            # "Stat_flavC_B1_eta_0p00toinf_pt_70to90",
+            # "Stat_flavC_B1_eta_0p00toinf_pt_90to120",
+            # "Stat_flavC_B1_eta_0p00toinf_pt_120toinf",
+            # "Stat_flavC_B2_eta_0p00toinf_pt_25to35",
+            # "Stat_flavC_B2_eta_0p00toinf_pt_35to50",
+            # "Stat_flavC_B2_eta_0p00toinf_pt_50to70",
+            # "Stat_flavC_B2_eta_0p00toinf_pt_70to90",
+            # "Stat_flavC_B2_eta_0p00toinf_pt_90to120",
+            # "Stat_flavC_B2_eta_0p00toinf_pt_120toinf",
+            # "Stat_flavC_B3_eta_0p00toinf_pt_25to35",
+            # "Stat_flavC_B3_eta_0p00toinf_pt_35to50",
+            # "Stat_flavC_B3_eta_0p00toinf_pt_50to70",
+            # "Stat_flavC_B3_eta_0p00toinf_pt_70to90",
+            # "Stat_flavC_B3_eta_0p00toinf_pt_90to120",
+            # "Stat_flavC_B3_eta_0p00toinf_pt_120toinf",
+            # "Stat_flavC_B4_eta_0p00toinf_pt_25to35",
+            # "Stat_flavC_B4_eta_0p00toinf_pt_35to50",
+            # "Stat_flavC_B4_eta_0p00toinf_pt_50to70",
+            # "Stat_flavC_B4_eta_0p00toinf_pt_70to90",
+            # "Stat_flavC_B4_eta_0p00toinf_pt_90to120",
+            # "Stat_flavC_B4_eta_0p00toinf_pt_120toinf",
+            # "Stat_flavC_C0_eta_0p00toinf_pt_25to35",
+            # "Stat_flavC_C0_eta_0p00toinf_pt_35to50",
+            # "Stat_flavC_C0_eta_0p00toinf_pt_50to70",
+            # "Stat_flavC_C0_eta_0p00toinf_pt_70to90",
+            # "Stat_flavC_C0_eta_0p00toinf_pt_90to120",
+            # "Stat_flavC_C0_eta_0p00toinf_pt_120toinf",
+            # "Stat_flavC_C1_eta_0p00toinf_pt_25to35",
+            # "Stat_flavC_C1_eta_0p00toinf_pt_35to50",
+            # "Stat_flavC_C1_eta_0p00toinf_pt_50to70",
+            # "Stat_flavC_C1_eta_0p00toinf_pt_70to90",
+            # "Stat_flavC_C1_eta_0p00toinf_pt_90to120",
+            # "Stat_flavC_C1_eta_0p00toinf_pt_120toinf",
+            # "Stat_flavC_C2_eta_0p00toinf_pt_25to35",
+            # "Stat_flavC_C2_eta_0p00toinf_pt_35to50",
+            # "Stat_flavC_C2_eta_0p00toinf_pt_50to70",
+            # "Stat_flavC_C2_eta_0p00toinf_pt_70to90",
+            # "Stat_flavC_C2_eta_0p00toinf_pt_90to120",
+            # "Stat_flavC_C2_eta_0p00toinf_pt_120toinf",
+            # "Stat_flavC_C3_eta_0p00toinf_pt_25to35",
+            # "Stat_flavC_C3_eta_0p00toinf_pt_35to50",
+            # "Stat_flavC_C3_eta_0p00toinf_pt_50to70",
+            # "Stat_flavC_C3_eta_0p00toinf_pt_70to90",
+            # "Stat_flavC_C3_eta_0p00toinf_pt_90to120",
+            # "Stat_flavC_C3_eta_0p00toinf_pt_120toinf",
+            # "Stat_flavC_C4_eta_0p00toinf_pt_25to35",
+            # "Stat_flavC_C4_eta_0p00toinf_pt_35to50",
+            # "Stat_flavC_C4_eta_0p00toinf_pt_50to70",
+            # "Stat_flavC_C4_eta_0p00toinf_pt_70to90",
+            # "Stat_flavC_C4_eta_0p00toinf_pt_90to120",
+            # "Stat_flavC_C4_eta_0p00toinf_pt_120toinf",
+            # "Stat_flavL_B0_eta_0p00toinf_pt_25to35",
+            # "Stat_flavL_B0_eta_0p00toinf_pt_35to50",
+            # "Stat_flavL_B0_eta_0p00toinf_pt_50to70",
+            # "Stat_flavL_B0_eta_0p00toinf_pt_70to90",
+            # "Stat_flavL_B0_eta_0p00toinf_pt_90to120",
+            # "Stat_flavL_B0_eta_0p00toinf_pt_120toinf",
+            # "Stat_flavL_B1_eta_0p00toinf_pt_25to35",
+            # "Stat_flavL_B1_eta_0p00toinf_pt_35to50",
+            # "Stat_flavL_B1_eta_0p00toinf_pt_50to70",
+            # "Stat_flavL_B1_eta_0p00toinf_pt_70to90",
+            # "Stat_flavL_B1_eta_0p00toinf_pt_90to120",
+            # "Stat_flavL_B1_eta_0p00toinf_pt_120toinf",
+            # "Stat_flavL_B2_eta_0p00toinf_pt_25to35",
+            # "Stat_flavL_B2_eta_0p00toinf_pt_35to50",
+            # "Stat_flavL_B2_eta_0p00toinf_pt_50to70",
+            # "Stat_flavL_B2_eta_0p00toinf_pt_70to90",
+            # "Stat_flavL_B2_eta_0p00toinf_pt_90to120",
+            # "Stat_flavL_B2_eta_0p00toinf_pt_120toinf",
+            # "Stat_flavL_B3_eta_0p00toinf_pt_25to35",
+            # "Stat_flavL_B3_eta_0p00toinf_pt_35to50",
+            # "Stat_flavL_B3_eta_0p00toinf_pt_50to70",
+            # "Stat_flavL_B3_eta_0p00toinf_pt_70to90",
+            # "Stat_flavL_B3_eta_0p00toinf_pt_90to120",
+            # "Stat_flavL_B3_eta_0p00toinf_pt_120toinf",
+            # "Stat_flavL_B4_eta_0p00toinf_pt_25to35",
+            # "Stat_flavL_B4_eta_0p00toinf_pt_35to50",
+            # "Stat_flavL_B4_eta_0p00toinf_pt_50to70",
+            # "Stat_flavL_B4_eta_0p00toinf_pt_70to90",
+            # "Stat_flavL_B4_eta_0p00toinf_pt_90to120",
+            # "Stat_flavL_B4_eta_0p00toinf_pt_120toinf",
+            # "Stat_flavL_C0_eta_0p00toinf_pt_25to35",
+            # "Stat_flavL_C0_eta_0p00toinf_pt_35to50",
+            # "Stat_flavL_C0_eta_0p00toinf_pt_50to70",
+            # "Stat_flavL_C0_eta_0p00toinf_pt_70to90",
+            # "Stat_flavL_C0_eta_0p00toinf_pt_90to120",
+            # "Stat_flavL_C0_eta_0p00toinf_pt_120toinf",
+            # "Stat_flavL_C1_eta_0p00toinf_pt_25to35",
+            # "Stat_flavL_C1_eta_0p00toinf_pt_35to50",
+            # "Stat_flavL_C1_eta_0p00toinf_pt_50to70",
+            # "Stat_flavL_C1_eta_0p00toinf_pt_70to90",
+            # "Stat_flavL_C1_eta_0p00toinf_pt_90to120",
+            # "Stat_flavL_C1_eta_0p00toinf_pt_120toinf",
+            # "Stat_flavL_C2_eta_0p00toinf_pt_25to35",
+            # "Stat_flavL_C2_eta_0p00toinf_pt_35to50",
+            # "Stat_flavL_C2_eta_0p00toinf_pt_50to70",
+            # "Stat_flavL_C2_eta_0p00toinf_pt_70to90",
+            # "Stat_flavL_C2_eta_0p00toinf_pt_90to120",
+            # "Stat_flavL_C2_eta_0p00toinf_pt_120toinf",
+            # "Stat_flavL_C3_eta_0p00toinf_pt_25to35",
+            # "Stat_flavL_C3_eta_0p00toinf_pt_35to50",
+            # "Stat_flavL_C3_eta_0p00toinf_pt_50to70",
+            # "Stat_flavL_C3_eta_0p00toinf_pt_70to90",
+            # "Stat_flavL_C3_eta_0p00toinf_pt_90to120",
+            # "Stat_flavL_C3_eta_0p00toinf_pt_120toinf",
+            # "Stat_flavL_C4_eta_0p00toinf_pt_25to35",
+            # "Stat_flavL_C4_eta_0p00toinf_pt_35to50",
+            # "Stat_flavL_C4_eta_0p00toinf_pt_50to70",
+            # "Stat_flavL_C4_eta_0p00toinf_pt_70to90",
+            # "Stat_flavL_C4_eta_0p00toinf_pt_90to120",
+            # "Stat_flavL_C4_eta_0p00toinf_pt_120toinf",
+            "Stat_flavB_B0",
+            "Stat_flavB_B1",
+            "Stat_flavB_B2",
+            "Stat_flavB_B3",
+            "Stat_flavB_B4",
+            "Stat_flavB_C0",
+            "Stat_flavB_C1",
+            "Stat_flavB_C2",
+            "Stat_flavB_C3",
+            "Stat_flavB_C4",
+            "Stat_flavB_L0",
+            "Stat_flavC_B0",
+            "Stat_flavC_B1",
+            "Stat_flavC_B2",
+            "Stat_flavC_B3",
+            "Stat_flavC_B4",
+            "Stat_flavC_C0",
+            "Stat_flavC_C1",
+            "Stat_flavC_C2",
+            "Stat_flavC_C3",
+            "Stat_flavC_C4",
+            "Stat_flavC_L0",
+            "Stat_flavL_B0",
+            "Stat_flavL_B1",
+            "Stat_flavL_B2",
+            "Stat_flavL_B3",
+            "Stat_flavL_B4",
+            "Stat_flavL_C0",
+            "Stat_flavL_C1",
+            "Stat_flavL_C2",
+            "Stat_flavL_C3",
+            "Stat_flavL_C4",
+            "Stat_flavL_L0",
+            # "Stat",
+            # "Total",
+        ]
+    elif SFtype.endswith("C"):
         systlist = [
             "Extrap",
             "Interp",
@@ -2151,16 +2440,21 @@ def btagSFs(event, correct_map, weights, SFtype, syst=False):
                         ),
                     )
                 elif SFtype == "UParTAK4BC":
-                    jet_2Dbin = ak.fill_none(jet.btagUParTAK42Dbin, 0)
-                    jet_eta = ak.fill_none(jet.eta, 0)
+                    jet.btagUParTAK42Dbin = ak.fill_none(jet.btagUParTAK42Dbin, 0)
+                    jet.btagUParTAK42Dbin = ak.where(
+                        jet.btagUParTAK42Dbin < 0,
+                        0,
+                        jet.btagUParTAK42Dbin,
+                    )
+                    jet_eta = ak.fill_none(np.abs(jet.eta), 0)
                     jet_pt = ak.fill_none(jet.pt, 0)
                     tmp_sfs = np.where(
                         masknone,
                         1.0,
-                        correct_map["ctag"][correct_map["BTV_cfg"]].evaluate(
+                        correct_map["ctag"]["UParTAK4_pseudocontinuous"].evaluate(
                             "central",
                             jet.hadronFlavour,
-                            jet_2Dbin,
+                            jet.btagUParTAK42Dbin,
                             jet_eta,
                             jet_pt,
                         ),
@@ -2169,10 +2463,10 @@ def btagSFs(event, correct_map, weights, SFtype, syst=False):
                         tmp_sfs_up = np.where(
                             masknone,
                             1.0,
-                            correct_map["ctag"][correct_map["BTV_cfg"]].evaluate(
+                            correct_map["ctag"]["UParTAK4_pseudocontinuous"].evaluate(
                                 f"up_{systlist[i]}",
                                 jet.hadronFlavour,
-                                jet_2Dbin,
+                                jet.btagUParTAK42Dbin,
                                 jet_eta,
                                 jet_pt,
                             ),
@@ -2180,10 +2474,10 @@ def btagSFs(event, correct_map, weights, SFtype, syst=False):
                         tmp_sfs_down = np.where(
                             masknone,
                             1.0,
-                            correct_map["ctag"][correct_map["BTV_cfg"]].evaluate(
+                            correct_map["ctag"]["UParTAK4_pseudocontinuous"].evaluate(
                                 f"down_{systlist[i]}",
                                 jet.hadronFlavour,
-                                jet_2Dbin,
+                                jet.btagUParTAK42Dbin,
                                 jet_eta,
                                 jet_pt,
                             ),

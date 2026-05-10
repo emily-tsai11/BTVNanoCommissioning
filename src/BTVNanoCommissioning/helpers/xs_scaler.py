@@ -37,7 +37,7 @@ def scaleSumW(output, lumi):
     merged_output = merge_output(output)
 
     with alive_bar(
-        len(merged_output.keys()), title="Scaling by the sum of weights"
+        len(merged_output.keys()), title="Scaling by the XS, lumi, and sum of weights"
     ) as bar:
         for sample, accu in merged_output.items():
             scaled[sample] = {}

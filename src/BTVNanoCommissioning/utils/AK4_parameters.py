@@ -400,7 +400,7 @@ correction_config = {
                 "mu_Trig": "NUM_IsoMu24_DEN_CutBasedIdTight_and_PFIsoTight",  # for now
             },
             "muonSS": "",
-            # "BTV": ["ctag", "UParTAK4_pseudocontinuous"],
+            # "BTV": {"ctag": "ctagging.json.gz"},
         },
         "semittE_2D": {
             "EGM": {
@@ -413,7 +413,7 @@ correction_config = {
                 "Scale",
                 "SmearAndSyst",
             ],
-            # "BTV": ["ctag", "UParTAK4_pseudocontinuous"],
+            # "BTV": {"ctag": "ctagging.json.gz"},
         },
     },
     "Prompt25": {
@@ -514,7 +514,7 @@ correction_config = {
                 # TODO: need to derive single lepton trigger SFs with prompt MVA
                 "mu_Trig": "NUM_IsoMu24_DEN_CutBasedIdTight_and_PFIsoTight",  # for now
             },
-            # "BTV": ["ctag", "UParTAK4_pseudocontinuous"],
+            # "BTV": {"ctag": "ctagging.json.gz"},
         },
         "semittE_2D": {
             "EGM": {
@@ -523,7 +523,7 @@ correction_config = {
                 # TODO: need to derive single lepton trigger SFs with prompt MVA
                 "ele_Trig 2024Prompt Electron-HLT-SF": "HLT_SF_Ele30_MVAiso80ID",  # for now
             },
-            # "BTV": ["ctag", "UParTAK4_pseudocontinuous"],
+            # "BTV": {"ctag": "ctagging.json.gz"},
         },
     },
     "prompt_dataMC": {

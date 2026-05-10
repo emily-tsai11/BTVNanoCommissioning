@@ -157,11 +157,6 @@ def missing_branch(events, campaign=None):
             -1,
             1.0 - jets.btagUParTAK4CvB,
         )
-        jets["btagUParTAK4BvCt"] = ak.where(
-            jets.btagUParTAK4BvC < 0.0,
-            -1,
-            1.0 - np.sqrt(1.0 - jets.btagUParTAK4BvC),
-        )
         jets["btagUParTAK4BvC_pt25to35"] = ak.where(
             (jets.pt < 25.0) | (jets.pt >= 35.0),
             -2,
@@ -196,7 +191,6 @@ def missing_branch(events, campaign=None):
             events.Jet,
             {
                 "btagUParTAK4BvC": jets.btagUParTAK4BvC,
-                "btagUParTAK4BvCt": jets.btagUParTAK4BvCt,
                 "btagUParTAK4BvC_pt25to35": jets.btagUParTAK4BvC_pt25to35,
                 "btagUParTAK4BvC_pt35to50": jets.btagUParTAK4BvC_pt35to50,
                 "btagUParTAK4BvC_pt50to70": jets.btagUParTAK4BvC_pt50to70,
@@ -243,11 +237,6 @@ def missing_branch(events, campaign=None):
                 + jets.btagUParTAK4UDG
             ),
         )
-        jets["btagUParTAK4HFvLFt"] = ak.where(
-            jets.btagUParTAK4HFvLF < 0.0,
-            -1,
-            1.0 - np.sqrt(1.0 - jets.btagUParTAK4HFvLF),
-        )
         jets["btagUParTAK4HFvLF_pt25to35"] = ak.where(
             (jets.pt < 25.0) | (jets.pt >= 35.0),
             -2,
@@ -282,7 +271,6 @@ def missing_branch(events, campaign=None):
             events.Jet,
             {
                 "btagUParTAK4HFvLF": jets.btagUParTAK4HFvLF,
-                "btagUParTAK4HFvLFt": jets.btagUParTAK4HFvLFt,
                 "btagUParTAK4HFvLF_pt25to35": jets.btagUParTAK4HFvLF_pt25to35,
                 "btagUParTAK4HFvLF_pt35to50": jets.btagUParTAK4HFvLF_pt35to50,
                 "btagUParTAK4HFvLF_pt50to70": jets.btagUParTAK4HFvLF_pt50to70,
