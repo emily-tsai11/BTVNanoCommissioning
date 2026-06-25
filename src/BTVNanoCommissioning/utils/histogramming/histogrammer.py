@@ -313,17 +313,27 @@ def histo_writter(pruned_ev, output, weights, systematics, isSyst, SF_map):
                                 flatten(sel_jet[histname.replace(f"jet{i}_", "")]),
                                 weight=wgt,
                             )
-                # fill positively tagged jets, negatively tagged jets, and inclusive jets, binned in pt
-                if histname.endswith("_postag_jet_pt") or histname.endswith(
-                    "_negtag_jet_pt"
-                ):
+                # fill negatively tagged jets, and inclusive jets, binned in pt
+                if histname.endswith("_negtag_jet_pt"):
                     col_name = histname.replace("_pt", "")
                     if col_name not in pruned_ev.fields:
                         continue
                     jet_col = pruned_ev[col_name]
                     jet_syst = np.full(len(flatten(jet_col.pt)), syst[0])
                     h.fill(
-                        jet_syst,
+                        syst_perjet,
+                        flatten(jet_col.flavor),
+                        flatten(jet_col.pt),
+                        weight=flatten(ak.broadcast_arrays(weight, jet_col.pt)[0]),
+                    )
+                elif histname.endswith("_negtag_jet_cWP_pt"):
+                    col_name = histname.replace("_pt", "")
+                    if col_name not in pruned_ev.fields:
+                        continue
+                    jet_col = pruned_ev[col_name]
+                    jet_syst = np.full(len(flatten(jet_col.pt)), syst[0])
+                    h.fill(
+                        syst_perjet,
                         flatten(jet_col.flavor),
                         flatten(jet_col.pt),
                         weight=flatten(ak.broadcast_arrays(weight, jet_col.pt)[0]),
@@ -331,7 +341,7 @@ def histo_writter(pruned_ev, output, weights, systematics, isSyst, SF_map):
                 elif histname.endswith("jet_pt") and "AllSelJet" in pruned_ev.fields:
                     jet_syst = np.full(len(flatten(pruned_ev["AllSelJet"].pt)), syst[0])
                     h.fill(
-                        jet_syst,
+                        syst_perjet,
                         flatten(pruned_ev["AllSelJet"].flavor),
                         flatten(pruned_ev["AllSelJet"].pt),
                         weight=flatten(
@@ -381,63 +391,6 @@ def histo_writter(pruned_ev, output, weights, systematics, isSyst, SF_map):
                         discr=flat_discr,
                         weight=flatten(ak.broadcast_arrays(weight, discr)[0]),
                     )
-
-        """
-        # 2D correlation study
-        if nj == 1:
-            sel_jet, flav = pruned_ev.SelJet, genflavor
-            if "poslpt_vs_jetpt" in output.keys():
-                output["poslpt_vs_jetpt"].fill(
-                    syst=syst,
-                    flav=flatten(flav),
-                    leppt=pruned_ev.posl["pt"],
-                    jetpt=flatten(sel_jet["pt"]),
-                    weight=weight,
-                )
-            if "neglpt_vs_jetpt" in output.keys():
-                output["neglpt_vs_jetpt"].fill(
-                    syst=syst,
-                    flav=flatten(flav),
-                    leppt=pruned_ev.negl["pt"],
-                    jetpt=flatten(sel_jet["pt"]),
-                    weight=weight,
-                )
-        elif nj == 2:
-            sel_jet0, flav0 = pruned_ev.SelJet[:, 0], genflavor[:, 0]
-            sel_jet1, flav1 = pruned_ev.SelJet[:, 1], genflavor[:, 1]
-            if f"elept_vs_firstjetpt" in output.keys():
-                output[f"elept_vs_firstjetpt"].fill(
-                    syst=syst,
-                    flav=flatten(flav0),
-                    leppt=pruned_ev.SelElectron["pt"],
-                    jetpt=flatten(sel_jet0["pt"]),
-                    weight=weight,
-                )
-            if f"elept_vs_secondjetpt" in output.keys():
-                output[f"elept_vs_secondjetpt"].fill(
-                    syst=syst,
-                    flav=flatten(flav),
-                    leppt=pruned_ev.SelElectron["pt"],
-                    jetpt=flatten(sel_jet1["pt"]),
-                    weight=weight,
-                )
-            if f"mupt_vs_firstjetpt" in output.keys():
-                output[f"mupt_vs_firstjetpt"].fill(
-                    syst=syst,
-                    flav=flatten(flav0),
-                    leppt=pruned_ev.SelMuon["pt"],
-                    jetpt=flatten(sel_jet0["pt"]),
-                    weight=weight,
-                )
-            if f"mupt_vs_secondjetpt" in output.keys():
-                output[f"mupt_vs_secondjetpt"].fill(
-                    syst=syst,
-                    flav=flatten(flav),
-                    leppt=pruned_ev.SelMuon["pt"],
-                    jetpt=flatten(sel_jet1["pt"]),
-                    weight=weight,
-                )
-        """
 
         if "dr_poslnegl" in output.keys():
             # DY histograms
@@ -534,12 +487,13 @@ def histo_writter(pruned_ev, output, weights, systematics, isSyst, SF_map):
             output["dilep_mass"].fill(
                 syst, flatten(pruned_ev.dilep.mass), weight=weight
             )
-            output["dilep_ptratio"].fill(
-                syst,
-                genflavor,
-                flatten(pruned_ev.dilep.pt / pruned_ev.SelJet.pt),
-                weight=weight,
-            )
+            if "dilep_ptratio" in output.keys():
+                output["dilep_ptratio"].fill(
+                    syst,
+                    genflavor,
+                    flatten(pruned_ev.dilep.pt / pruned_ev.SelJet.pt),
+                    weight=weight,
+                )
 
         if "MET_pt" in output.keys():
             output["MET_pt"].fill(syst, flatten(pruned_ev.MET.pt), weight=weight)
