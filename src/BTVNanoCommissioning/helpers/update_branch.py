@@ -44,7 +44,6 @@ def missing_branch(events, campaign=None):
             "This branch is required for JEC corrections. "
             "Check that the input NanoAOD file contains Rho_fixedGridRhoFastjetAll."
         )
-    ## calculate missing nodes
 
     ## calculate missing nodes
     if not hasattr(events.Jet, "btagDeepFlavB"):
