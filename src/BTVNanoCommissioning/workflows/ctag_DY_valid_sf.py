@@ -19,6 +19,8 @@ from BTVNanoCommissioning.utils.array_writer import array_writer
 from BTVNanoCommissioning.utils.selection import (
     HLT_helper,
     jet_id,
+    mu_promptmvaid,
+    ele_promptmvaid,
     mu_idiso,
     ele_mvatightid,
     MET_filters,
@@ -138,18 +140,32 @@ class NanoProcessor(processor.ProcessorABC):
         req_metfilter = MET_filters(events, self._campaign)
 
         # Muon cuts
-        dilep_mu = events.Muon[
-            ak.any(events.Muon.pt > 20, axis=1)
-            & (events.Muon.pt > 12)
-            & mu_idiso(events, self._campaign)
-        ]
+        if "2D" in self.selMod and self._campaign in [
+            "Summer24",
+            "Winter25",
+            "Prompt25",
+        ]:  # NanoAODv15
+            dilep_mu = events.Muon[
+                (events.Muon.pt > 12) & mu_promptmvaid(events, self._campaign)
+            ]
+        else:
+            dilep_mu = events.Muon[
+                (events.Muon.pt > 12) & mu_idiso(events, self._campaign)
+            ]
 
         # Electron cuts
-        dilep_ele = events.Electron[
-            ak.any(events.Electron.pt > 26, axis=1)
-            & (events.Electron.pt > 15)
-            & ele_mvatightid(events, self._campaign)
-        ]
+        if "2D" in self.selMod and self._campaign in [
+            "Summer24",
+            "Winter25",
+            "Prompt25",
+        ]:  # NanoAODv15
+            dilep_ele = events.Electron[
+                (events.Electron.pt > 15) & ele_promptmvaid(events, self._campaign)
+            ]
+        else:
+            dilep_ele = events.Electron[
+                (events.Electron.pt > 15) & ele_mvatightid(events, self._campaign)
+            ]
 
         if isMu:
             thisdilep = dilep_mu

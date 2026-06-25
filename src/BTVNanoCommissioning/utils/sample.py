@@ -150,24 +150,6 @@ predefined_sample = {
         ],
     },
     "DY_sfl": {
-        "data": ["DoubleMuon", "Muon", "Muon0", "Muon1"],
-        "MC": [
-            "DYto2L-2Jets_MLL-50_TuneCP5_13p6TeV_amcatnloFXFX-pythia8",
-            "DYto2Mu-4Jets_Bin-MLL-50_TuneCP5_13p6TeV_madgraphMLM-pythia8",
-            "DYto2E-4Jets_Bin-MLL-50_TuneCP5_13p6TeV_madgraphMLM-pythia8",
-        ],
-        "minor_MC": ["TTto2L2Nu_TuneCP5_13p6TeV_powheg-pythia8"],
-    },
-    "eDY_sfl": {
-        "data": ["EGamma", "EGamma0", "EGamma1"],
-        "MC": [
-            "DYto2L-2Jets_MLL-50_TuneCP5_13p6TeV_amcatnloFXFX-pythia8",
-            "DYto2Mu-4Jets_Bin-MLL-50_TuneCP5_13p6TeV_madgraphMLM-pythia8",
-            "DYto2E-4Jets_Bin-MLL-50_TuneCP5_13p6TeV_madgraphMLM-pythia8",
-        ],
-        "minor_MC": ["TTto2L2Nu_TuneCP5_13p6TeV_powheg-pythia8"],
-    },
-    "DY_sfl": {
         "data": ["DoubleMuon", "SingleMuon", "Muon", "Muon0", "Muon1"],
         "MC": [
             # "DYJetsToLL_M-50_TuneCP5_13TeV-madgraphMLM-pythia8",
@@ -429,9 +411,15 @@ predefined_sample = {
             "TWminusto4Q_TuneCP5_13p6TeV_powheg-pythia8",
             "TWminustoLNu2Q_TuneCP5_13p6TeV_powheg-pythia8",
             # W+jets
-            "WtoENu-2Jets_TuneCP5_13p6TeV_amcatnloFXFX-pythia8",
-            "WtoMuNu-2Jets_TuneCP5_13p6TeV_amcatnloFXFX-pythia8",
-            "WtoTauNu-2Jets_TuneCP5_13p6TeV_amcatnloFXFX-pythia8",
+            "WtoENu-2Jets_Bin-0J_TuneCP5_13p6TeV_amcatnloFXFX-pythia8",
+            "WtoENu-2Jets_Bin-1J_TuneCP5_13p6TeV_amcatnloFXFX-pythia8",
+            "WtoENu-2Jets_Bin-2J_TuneCP5_13p6TeV_amcatnloFXFX-pythia8",
+            "WtoMuNu-2Jets_Bin-0J_TuneCP5_13p6TeV_amcatnloFXFX-pythia8",
+            "WtoMuNu-2Jets_Bin-1J_TuneCP5_13p6TeV_amcatnloFXFX-pythia8",
+            "WtoMuNu-2Jets_Bin-2J_TuneCP5_13p6TeV_amcatnloFXFX-pythia8",
+            "WtoTauNu-2Jets_Bin-0J_TuneCP5_13p6TeV_amcatnloFXFX-pythia8",
+            "WtoTauNu-2Jets_Bin-1J_TuneCP5_13p6TeV_amcatnloFXFX-pythia8",
+            "WtoTauNu-2Jets_Bin-2J_TuneCP5_13p6TeV_amcatnloFXFX-pythia8",
             # DY
             "DYto2E-2Jets_Bin-MLL-10to50_TuneCP5_13p6TeV_amcatnloFXFX-pythia8",
             "DYto2Mu-2Jets_Bin-MLL-10to50_TuneCP5_13p6TeV_amcatnloFXFX-pythia8",
@@ -479,9 +467,15 @@ predefined_sample = {
             "TWminusto4Q_TuneCP5_13p6TeV_powheg-pythia8",
             "TWminustoLNu2Q_TuneCP5_13p6TeV_powheg-pythia8",
             # W+jets
-            "WtoENu-2Jets_TuneCP5_13p6TeV_amcatnloFXFX-pythia8",
-            "WtoMuNu-2Jets_TuneCP5_13p6TeV_amcatnloFXFX-pythia8",
-            "WtoTauNu-2Jets_TuneCP5_13p6TeV_amcatnloFXFX-pythia8",
+            "WtoENu-2Jets_Bin-0J_TuneCP5_13p6TeV_amcatnloFXFX-pythia8",
+            "WtoENu-2Jets_Bin-1J_TuneCP5_13p6TeV_amcatnloFXFX-pythia8",
+            "WtoENu-2Jets_Bin-2J_TuneCP5_13p6TeV_amcatnloFXFX-pythia8",
+            "WtoMuNu-2Jets_Bin-0J_TuneCP5_13p6TeV_amcatnloFXFX-pythia8",
+            "WtoMuNu-2Jets_Bin-1J_TuneCP5_13p6TeV_amcatnloFXFX-pythia8",
+            "WtoMuNu-2Jets_Bin-2J_TuneCP5_13p6TeV_amcatnloFXFX-pythia8",
+            "WtoTauNu-2Jets_Bin-0J_TuneCP5_13p6TeV_amcatnloFXFX-pythia8",
+            "WtoTauNu-2Jets_Bin-1J_TuneCP5_13p6TeV_amcatnloFXFX-pythia8",
+            "WtoTauNu-2Jets_Bin-2J_TuneCP5_13p6TeV_amcatnloFXFX-pythia8",
             # DY
             "DYto2E-2Jets_Bin-MLL-10to50_TuneCP5_13p6TeV_amcatnloFXFX-pythia8",
             "DYto2Mu-2Jets_Bin-MLL-10to50_TuneCP5_13p6TeV_amcatnloFXFX-pythia8",
@@ -595,9 +589,15 @@ predefined_sample = {
     "2D_mu_Wc_sf": {
         "data": ["Muon0", "Muon1"],
         "MC": [
-            "WtoENu-2Jets_TuneCP5_13p6TeV_amcatnloFXFX-pythia8",
-            "WtoMuNu-2Jets_TuneCP5_13p6TeV_amcatnloFXFX-pythia8",
-            "WtoTauNu-2Jets_TuneCP5_13p6TeV_amcatnloFXFX-pythia8",
+            "WtoENu-2Jets_Bin-0J_TuneCP5_13p6TeV_amcatnloFXFX-pythia8",
+            "WtoENu-2Jets_Bin-1J_TuneCP5_13p6TeV_amcatnloFXFX-pythia8",
+            "WtoENu-2Jets_Bin-2J_TuneCP5_13p6TeV_amcatnloFXFX-pythia8",
+            "WtoMuNu-2Jets_Bin-0J_TuneCP5_13p6TeV_amcatnloFXFX-pythia8",
+            "WtoMuNu-2Jets_Bin-1J_TuneCP5_13p6TeV_amcatnloFXFX-pythia8",
+            "WtoMuNu-2Jets_Bin-2J_TuneCP5_13p6TeV_amcatnloFXFX-pythia8",
+            "WtoTauNu-2Jets_Bin-0J_TuneCP5_13p6TeV_amcatnloFXFX-pythia8",
+            "WtoTauNu-2Jets_Bin-1J_TuneCP5_13p6TeV_amcatnloFXFX-pythia8",
+            "WtoTauNu-2Jets_Bin-2J_TuneCP5_13p6TeV_amcatnloFXFX-pythia8",
         ],
         "minor_MC": [
             # TT
@@ -637,9 +637,15 @@ predefined_sample = {
     "2D_e_Wc_sf": {
         "data": ["EGamma0", "EGamma1", "EGamma2", "EGamma3"],
         "MC": [
-            "WtoENu-2Jets_TuneCP5_13p6TeV_amcatnloFXFX-pythia8",
-            "WtoMuNu-2Jets_TuneCP5_13p6TeV_amcatnloFXFX-pythia8",
-            "WtoTauNu-2Jets_TuneCP5_13p6TeV_amcatnloFXFX-pythia8",
+            "WtoENu-2Jets_Bin-0J_TuneCP5_13p6TeV_amcatnloFXFX-pythia8",
+            "WtoENu-2Jets_Bin-1J_TuneCP5_13p6TeV_amcatnloFXFX-pythia8",
+            "WtoENu-2Jets_Bin-2J_TuneCP5_13p6TeV_amcatnloFXFX-pythia8",
+            "WtoMuNu-2Jets_Bin-0J_TuneCP5_13p6TeV_amcatnloFXFX-pythia8",
+            "WtoMuNu-2Jets_Bin-1J_TuneCP5_13p6TeV_amcatnloFXFX-pythia8",
+            "WtoMuNu-2Jets_Bin-2J_TuneCP5_13p6TeV_amcatnloFXFX-pythia8",
+            "WtoTauNu-2Jets_Bin-0J_TuneCP5_13p6TeV_amcatnloFXFX-pythia8",
+            "WtoTauNu-2Jets_Bin-1J_TuneCP5_13p6TeV_amcatnloFXFX-pythia8",
+            "WtoTauNu-2Jets_Bin-2J_TuneCP5_13p6TeV_amcatnloFXFX-pythia8",
         ],
         "minor_MC": [
             # TT

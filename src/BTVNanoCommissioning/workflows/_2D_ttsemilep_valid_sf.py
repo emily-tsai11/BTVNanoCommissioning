@@ -22,6 +22,8 @@ from BTVNanoCommissioning.utils.selection import (
     mu_promptmvaid,
     ele_mvatightid,
     ele_promptmvaid,
+    mu_idiso,
+    ele_mvatightid,
     MET_filters,
     btag_wp,
 )

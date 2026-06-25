@@ -17,6 +17,8 @@ from BTVNanoCommissioning.utils.array_writer import array_writer
 from BTVNanoCommissioning.utils.selection import (
     HLT_helper,
     jet_id,
+    mu_promptmvaid,
+    ele_promptmvaid,
     mu_idiso,
     ele_mvatightid,
     MET_filters,
@@ -148,13 +150,23 @@ class NanoProcessor(processor.ProcessorABC):
         ## Lepton cuts
         if isMu:
             # muon twiki: https://twiki.cern.ch/twiki/bin/view/CMS/SWGuideMuonIdRun2
-            iso_lep = events.Muon[
-                (events.Muon.pt > 26) & mu_idiso(events, self._campaign)
-            ]
+            if self._campaign in ["Summer24", "Winter25", "Prompt25"]:  # NanoAODv15
+                iso_lep = events.Muon[
+                    (events.Muon.pt > 26) & mu_promptmvaid(events, self._campaign)
+                ]
+            else:
+                iso_lep = events.Muon[
+                    (events.Muon.pt > 26) & mu_idiso(events, self._campaign)
+                ]
         elif isEle:
-            iso_lep = events.Electron[
-                (events.Electron.pt > 32) & ele_mvatightid(events, self._campaign)
-            ]
+            if self._campaign in ["Summer24", "Winter25", "Prompt25"]:  # NanoAODv15
+                iso_lep = events.Electron[
+                    (events.Electron.pt > 32) & ele_promptmvaid(events, self._campaign)
+                ]
+            else:
+                iso_lep = events.Electron[
+                    (events.Electron.pt > 32) & ele_mvatightid(events, self._campaign)
+                ]
         req_lep = ak.count(iso_lep.pt, axis=1) == 1
 
         iso_lep = ak.pad_none(iso_lep, 1, axis=1)
@@ -286,10 +298,22 @@ class NanoProcessor(processor.ProcessorABC):
         # )
 
         ## Dilepton veto
-        dilep_mu = events.Muon[(events.Muon.pt > 12) & mu_idiso(events, self._campaign)]
-        dilep_ele = events.Electron[
-            (events.Electron.pt > 15) & ele_mvatightid(events, self._campaign)
-        ]
+        if self._campaign in ["Summer24", "Winter25", "Prompt25"]:  # NanoAODv15
+            dilep_mu = events.Muon[
+                (events.Muon.pt > 12) & mu_promptmvaid(events, self._campaign)
+            ]
+        else:
+            dilep_mu = events.Muon[
+                (events.Muon.pt > 12) & mu_idiso(events, self._campaign)
+            ]
+        if self._campaign in ["Summer24", "Winter25", "Prompt25"]:  # NanoAODv15
+            dilep_ele = events.Electron[
+                (events.Electron.pt > 15) & ele_promptmvaid(events, self._campaign)
+            ]
+        else:
+            dilep_ele = events.Electron[
+                (events.Electron.pt > 15) & ele_mvatightid(events, self._campaign)
+            ]
         req_dilepveto = (
             ak.count(dilep_mu.pt, axis=1) + ak.count(dilep_ele.pt, axis=1) != 2
         )
