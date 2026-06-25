@@ -262,10 +262,10 @@ class NanoProcessor(processor.ProcessorABC):
             pruned_ev["SelMuon"] = event_iso_lep[event_level][:, 0]
         pruned_ev["njet"] = ak.count(event_jet[event_level].pt, axis=1)
         b_jet_mask = btag_wp(
-            event_jet[event_level], self._year, self._campaign, tagger, "b", "M"
+            event_jet[event_level], self._year, self._campaign, tagger, "2Db", "M"
         )
         c_jet_mask = btag_wp(
-            event_jet[event_level], self._year, self._campaign, tagger, "c", "M"
+            event_jet[event_level], self._year, self._campaign, tagger, "2Dc", "M"
         )
         pruned_ev["nbjet"] = ak.count(event_jet[event_level].pt[b_jet_mask], axis=1)
         pruned_ev["ncjet"] = ak.count(event_jet[event_level].pt[c_jet_mask], axis=1)
