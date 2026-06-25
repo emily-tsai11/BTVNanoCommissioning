@@ -487,12 +487,13 @@ def histo_writter(pruned_ev, output, weights, systematics, isSyst, SF_map):
             output["dilep_mass"].fill(
                 syst, flatten(pruned_ev.dilep.mass), weight=weight
             )
-            output["dilep_ptratio"].fill(
-                syst,
-                genflavor,
-                flatten(pruned_ev.dilep.pt / pruned_ev.SelJet.pt),
-                weight=weight,
-            )
+            if "dilep_ptratio" in output.keys():
+                output["dilep_ptratio"].fill(
+                    syst,
+                    genflavor,
+                    flatten(pruned_ev.dilep.pt / pruned_ev.SelJet.pt),
+                    weight=weight,
+                )
 
         if "MET_pt" in output.keys():
             output["MET_pt"].fill(syst, flatten(pruned_ev.MET.pt), weight=weight)
