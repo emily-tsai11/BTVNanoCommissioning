@@ -252,7 +252,7 @@ correction_config = {
                 "mu_Iso": "NUM_TightPFIso_DEN_TightID",
                 "mu_Trig": "NUM_IsoMu24_DEN_CutBasedIdTight_and_PFIsoTight",
             },
-            # "BTV": ["ctag", "ParticleNetAK4_pseudocontinuous"],
+            # # "BTV": {"ctag": "ctagging.json.gz"},
         },
         "semittE_2D": {
             "EGM": {
@@ -260,7 +260,7 @@ correction_config = {
                 "ele_Reco 2022Re-recoBCD Electron-ID-SF": "",
                 "ele_Trig 2022Re-recoBCD Electron-HLT-SF": "HLT_SF_Ele30_MVAiso80ID",
             },
-            # "BTV": ["ctag", "ParticleNetAK4_pseudocontinuous"],
+            # # "BTV": {"ctag": "ctagging.json.gz"},
         },
     },
     "Summer22EE": {
@@ -344,7 +344,7 @@ correction_config = {
                 "mu_Iso": "NUM_TightPFIso_DEN_TightID",
                 "mu_Trig": "NUM_IsoMu24_DEN_CutBasedIdTight_and_PFIsoTight",
             },
-            # "BTV": ["ctag", "ParticleNetAK4_pseudocontinuous"],
+            # # "BTV": {"ctag": "ctagging.json.gz"},
         },
         "semittE_2D": {
             "EGM": {
@@ -352,7 +352,7 @@ correction_config = {
                 "ele_Reco 2022Re-recoE+PromptFG Electron-ID-SF": "",
                 "ele_Trig 2022Re-recoE+PromptFG Electron-HLT-SF": "HLT_SF_Ele30_MVAiso80ID",
             },
-            # "BTV": ["ctag", "ParticleNetAK4_pseudocontinuous"],
+            # # "BTV": {"ctag": "ctagging.json.gz"},
         },
     },
     "Summer23": {
@@ -433,7 +433,7 @@ correction_config = {
                 "mu_Iso": "NUM_TightPFIso_DEN_TightID",
                 "mu_Trig": "NUM_IsoMu24_DEN_CutBasedIdTight_and_PFIsoTight",
             },
-            # "BTV": ["ctag", "ParticleNetAK4_pseudocontinuous"],
+            # # "BTV": {"ctag": "ctagging.json.gz"},
         },
         "semittE_2D": {
             "EGM": {
@@ -441,7 +441,7 @@ correction_config = {
                 "ele_Reco 2023PromptC Electron-ID-SF": "",
                 "ele_Trig 2023PromptC Electron-HLT-SF": "HLT_SF_Ele30_MVAiso80ID",
             },
-            # "BTV": ["ctag", "ParticleNetAK4_pseudocontinuous"],
+            # # "BTV": {"ctag": "ctagging.json.gz"},
         },
     },
     "Summer23BPix": {
@@ -522,7 +522,7 @@ correction_config = {
                 "mu_Iso": "NUM_TightPFIso_DEN_TightID",
                 "mu_Trig": "NUM_IsoMu24_DEN_CutBasedIdTight_and_PFIsoTight",
             },
-            # "BTV": ["ctag", "ParticleNetAK4_pseudocontinuous"],
+            # # "BTV": {"ctag": "ctagging.json.gz"},
         },
         "semittE_2D": {
             "EGM": {
@@ -530,7 +530,7 @@ correction_config = {
                 "ele_Reco 2023PromptD Electron-ID-SF": "",
                 "ele_Trig 2023PromptD Electron-HLT-SF": "HLT_SF_Ele30_MVAiso80ID",
             },
-            # "BTV": ["ctag", "ParticleNetAK4_pseudocontinuous"],
+            # # "BTV": {"ctag": "ctagging.json.gz"},
         },
     },
     "Summer24": {
@@ -690,7 +690,6 @@ correction_config = {
             # JME: data L2L3Residual from Winter25 JME era.
             # JME_MC: MC truth JECs must come from the Summer24 era (L2Relative differs).
             # jetveto: jetvetomap from Winter25 JME era.
-            # EGM: no 2025 electron PromptMVA ID SFs yet (electron.json.gz), reuse Summer24.
             "cvmfs_override": {
                 "JME": "Run3-25Prompt-Winter25-NanoAODv15",
                 "JME_MC": "Run3-24CDEReprocessingFGHIPrompt-Summer24-NanoAODv15",
