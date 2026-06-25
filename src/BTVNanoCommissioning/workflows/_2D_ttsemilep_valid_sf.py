@@ -187,13 +187,13 @@ class NanoProcessor(processor.ProcessorABC):
         req_jets = n_jet >= 4
 
         # b-tagged jets requirement
-        tagger = "UParTAK4" if self._campaign in ["Summer24", "Winter25", "Prompt25"] else "PNet"
-        mask_bjets = btag_wp(
-            event_jet, self._year, self._campaign, tagger, "b", "M"
+        tagger = (
+            "UParTAK4"
+            if self._campaign in ["Summer24", "Winter25", "Prompt25"]
+            else "PNet"
         )
-        mask_cjets = btag_wp(
-            event_jet, self._year, self._campaign, tagger, "c", "M"
-        )
+        mask_bjets = btag_wp(event_jet, self._year, self._campaign, tagger, "b", "M")
+        mask_cjets = btag_wp(event_jet, self._year, self._campaign, tagger, "c", "M")
         n_bjets = ak.count(event_jet[mask_bjets].pt, axis=1)
         n_cjets = ak.count(event_jet[mask_cjets].pt, axis=1)
         n_hfjets = n_bjets + n_cjets

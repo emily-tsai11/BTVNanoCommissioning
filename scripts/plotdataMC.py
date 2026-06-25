@@ -696,7 +696,19 @@ def main(args):
 
         if "2D" in discr:
             xtickpos = [0.5, 1.5, 2.5, 3.5, 4.5, 5.5, 6.5, 7.5, 8.5, 9.5, 10.5]
-            xticklabels = ["L0", "C0", "C1", "C2", "C3", "C4", "B0", "B1", "B2", "B3", "B4"]
+            xticklabels = [
+                "L0",
+                "C0",
+                "C1",
+                "C2",
+                "C3",
+                "C4",
+                "B0",
+                "B1",
+                "B2",
+                "B3",
+                "B4",
+            ]
             rax.set_xticks(xtickpos, xticklabels)
 
         if "sample" in args.split:

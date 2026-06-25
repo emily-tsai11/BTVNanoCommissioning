@@ -224,33 +224,33 @@ correction_config = {
             "MUO": {
                 "mu_ID": "NUM_TightID_DEN_TrackerMuons",
                 "mu_Iso": "NUM_TightPFIso_DEN_TightID",
-                "mu_Trig": "NUM_IsoMu24_DEN_CutBasedIdTight_and_PFIsoTight"
+                "mu_Trig": "NUM_IsoMu24_DEN_CutBasedIdTight_and_PFIsoTight",
             },
         },
         "WcE_2D": {
             "EGM": {
                 "ele_ID 2022Re-recoBCD Electron-ID-SF": "wp80iso",
                 "ele_Reco 2022Re-recoBCD Electron-ID-SF": "",
-                "ele_Trig 2022Re-recoBCD Electron-HLT-SF": "HLT_SF_Ele30_MVAiso80ID"
+                "ele_Trig 2022Re-recoBCD Electron-HLT-SF": "HLT_SF_Ele30_MVAiso80ID",
             },
         },
         "ttdilep_sf_2D": {
             "MUO": {
                 "mu_ID": "NUM_TightID_DEN_TrackerMuons",
                 "mu_Iso": "NUM_TightPFIso_DEN_TightID",
-                "mu_Trig": "NUM_IsoMu24_DEN_CutBasedIdTight_and_PFIsoTight"
+                "mu_Trig": "NUM_IsoMu24_DEN_CutBasedIdTight_and_PFIsoTight",
             },
             "EGM": {
                 "ele_ID 2022Re-recoBCD Electron-ID-SF": "wp80iso",
                 "ele_Reco 2022Re-recoBCD Electron-ID-SF": "",
-                "ele_Trig 2022Re-recoBCD Electron-HLT-SF": "HLT_SF_Ele30_MVAiso80ID"
+                "ele_Trig 2022Re-recoBCD Electron-HLT-SF": "HLT_SF_Ele30_MVAiso80ID",
             },
         },
         "semittM_2D": {
             "MUO": {
                 "mu_ID": "NUM_TightID_DEN_TrackerMuons",
                 "mu_Iso": "NUM_TightPFIso_DEN_TightID",
-                "mu_Trig": "NUM_IsoMu24_DEN_CutBasedIdTight_and_PFIsoTight"
+                "mu_Trig": "NUM_IsoMu24_DEN_CutBasedIdTight_and_PFIsoTight",
             },
             # "BTV": ["ctag", "ParticleNetAK4_pseudocontinuous"],
         },
@@ -258,7 +258,7 @@ correction_config = {
             "EGM": {
                 "ele_ID 2022Re-recoBCD Electron-ID-SF": "wp80iso",
                 "ele_Reco 2022Re-recoBCD Electron-ID-SF": "",
-                "ele_Trig 2022Re-recoBCD Electron-HLT-SF": "HLT_SF_Ele30_MVAiso80ID"
+                "ele_Trig 2022Re-recoBCD Electron-HLT-SF": "HLT_SF_Ele30_MVAiso80ID",
             },
             # "BTV": ["ctag", "ParticleNetAK4_pseudocontinuous"],
         },
@@ -323,7 +323,7 @@ correction_config = {
             "EGM": {
                 "ele_ID 2022Re-recoE+PromptFG Electron-ID-SF": "wp80iso",
                 "ele_Reco 2022Re-recoE+PromptFG Electron-ID-SF": "",
-                "ele_Trig 2022Re-recoE+PromptFG Electron-HLT-SF": "HLT_SF_Ele30_MVAiso80ID"
+                "ele_Trig 2022Re-recoE+PromptFG Electron-HLT-SF": "HLT_SF_Ele30_MVAiso80ID",
             },
         },
         "ttdilep_sf_2D": {
@@ -335,14 +335,14 @@ correction_config = {
             "EGM": {
                 "ele_ID 2022Re-recoE+PromptFG Electron-ID-SF": "wp80iso",
                 "ele_Reco 2022Re-recoE+PromptFG Electron-ID-SF": "",
-                "ele_Trig 2022Re-recoE+PromptFG Electron-HLT-SF": "HLT_SF_Ele30_MVAiso80ID"
+                "ele_Trig 2022Re-recoE+PromptFG Electron-HLT-SF": "HLT_SF_Ele30_MVAiso80ID",
             },
         },
         "semittM_2D": {
             "MUO": {
                 "mu_ID": "NUM_TightID_DEN_TrackerMuons",
                 "mu_Iso": "NUM_TightPFIso_DEN_TightID",
-                "mu_Trig": "NUM_IsoMu24_DEN_CutBasedIdTight_and_PFIsoTight"
+                "mu_Trig": "NUM_IsoMu24_DEN_CutBasedIdTight_and_PFIsoTight",
             },
             # "BTV": ["ctag", "ParticleNetAK4_pseudocontinuous"],
         },
@@ -350,7 +350,7 @@ correction_config = {
             "EGM": {
                 "ele_ID 2022Re-recoE+PromptFG Electron-ID-SF": "wp80iso",
                 "ele_Reco 2022Re-recoE+PromptFG Electron-ID-SF": "",
-                "ele_Trig 2022Re-recoE+PromptFG Electron-HLT-SF": "HLT_SF_Ele30_MVAiso80ID"
+                "ele_Trig 2022Re-recoE+PromptFG Electron-HLT-SF": "HLT_SF_Ele30_MVAiso80ID",
             },
             # "BTV": ["ctag", "ParticleNetAK4_pseudocontinuous"],
         },
@@ -424,14 +424,14 @@ correction_config = {
             "EGM": {
                 "ele_ID 2023PromptC Electron-ID-SF": "wp80iso",
                 "ele_Reco 2023PromptC Electron-ID-SF": "",
-                "ele_Trig 2023PromptC Electron-HLT-SF": "HLT_SF_Ele30_MVAiso80ID"
+                "ele_Trig 2023PromptC Electron-HLT-SF": "HLT_SF_Ele30_MVAiso80ID",
             },
         },
         "semittM_2D": {
             "MUO": {
                 "mu_ID": "NUM_TightID_DEN_TrackerMuons",
                 "mu_Iso": "NUM_TightPFIso_DEN_TightID",
-                "mu_Trig": "NUM_IsoMu24_DEN_CutBasedIdTight_and_PFIsoTight"
+                "mu_Trig": "NUM_IsoMu24_DEN_CutBasedIdTight_and_PFIsoTight",
             },
             # "BTV": ["ctag", "ParticleNetAK4_pseudocontinuous"],
         },
@@ -439,7 +439,7 @@ correction_config = {
             "EGM": {
                 "ele_ID 2023PromptC Electron-ID-SF": "wp80iso",
                 "ele_Reco 2023PromptC Electron-ID-SF": "",
-                "ele_Trig 2023PromptC Electron-HLT-SF": "HLT_SF_Ele30_MVAiso80ID"
+                "ele_Trig 2023PromptC Electron-HLT-SF": "HLT_SF_Ele30_MVAiso80ID",
             },
             # "BTV": ["ctag", "ParticleNetAK4_pseudocontinuous"],
         },
@@ -520,7 +520,7 @@ correction_config = {
             "MUO": {
                 "mu_ID": "NUM_TightID_DEN_TrackerMuons",
                 "mu_Iso": "NUM_TightPFIso_DEN_TightID",
-                "mu_Trig": "NUM_IsoMu24_DEN_CutBasedIdTight_and_PFIsoTight"
+                "mu_Trig": "NUM_IsoMu24_DEN_CutBasedIdTight_and_PFIsoTight",
             },
             # "BTV": ["ctag", "ParticleNetAK4_pseudocontinuous"],
         },

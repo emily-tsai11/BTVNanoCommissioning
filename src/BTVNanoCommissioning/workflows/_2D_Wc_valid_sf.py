@@ -329,7 +329,9 @@ class NanoProcessor(processor.ProcessorABC):
         req_met_pt = MET.pt > 30.0
         jetmet_dphi = abs(event_jet_0.delta_phi(MET))
         req_jetmet_dphi = jetmet_dphi > 1.0
-        trkmet = events.TrkMET if int(self._year) >= 2024 else events.TkMET # NanoAODv15 uses `TrkMET`
+        trkmet = (
+            events.TrkMET if int(self._year) >= 2024 else events.TkMET
+        )  # NanoAODv15 uses `TrkMET`
         metTrkmet_dphi = abs(MET.delta_phi(trkmet))
         req_metTrkmet_dphi = metTrkmet_dphi < 1.0  # & (metTrkmet_dphi >= 0.5)
 
