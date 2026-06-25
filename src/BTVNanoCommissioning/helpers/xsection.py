@@ -766,7 +766,7 @@ xsection = [
         "energy": "13.6",
     },
     # ----------------------------------------------------------------------- #
-    # Binned by lepton: LO                                                    #
+    # Binned by leptons: LO                                                    #
     # ----------------------------------------------------------------------- #
     {
         "process_name": "WtoENu-4Jets_TuneCP5_13p6TeV_madgraphMLM-pythia8",
@@ -790,7 +790,7 @@ xsection = [
         "comment": "https://twiki.cern.ch/twiki/bin/viewauth/CMS/MATRIXCrossSectionsat13p6TeV with PDG 2025 values",
     },
     # ----------------------------------------------------------------------- #
-    # Binned by lepton: NLO                                                   #
+    # Binned by leptons: NLO                                                   #
     # ----------------------------------------------------------------------- #
     {
         "process_name": "WtoENu-2Jets_TuneCP5_13p6TeV_amcatnloFXFX-pythia8",
@@ -812,6 +812,72 @@ xsection = [
         "accuracy": "NNLO_QCDxNNLO_EW",
         "energy": "13.6",
         "comment": "https://twiki.cern.ch/twiki/bin/viewauth/CMS/MATRIXCrossSectionsat13p6TeV with PDG 2025 values",
+    },
+    # ----------------------------------------------------------------------- #
+    # Binned by jets & leptons: NLO                                            #
+    # ----------------------------------------------------------------------- #
+    {
+        "process_name": "WtoENu-2Jets_Bin-0J_TuneCP5_13p6TeV_amcatnloFXFX-pythia8",
+        "cross_section": "18620.0",
+        "accuracy": "NLO",
+        "energy": "13.6",
+        "comment": "GenXSAnalyzer",
+    },
+    {
+        "process_name": "WtoENu-2Jets_Bin-1J_TuneCP5_13p6TeV_amcatnloFXFX-pythia8",
+        "cross_section": "3015.0",
+        "accuracy": "NLO",
+        "energy": "13.6",
+        "comment": "GenXSAnalyzer",
+    },
+    {
+        "process_name": "WtoENu-2Jets_Bin-2J_TuneCP5_13p6TeV_amcatnloFXFX-pythia8",
+        "cross_section": "1161.0",
+        "accuracy": "NLO",
+        "energy": "13.6",
+        "comment": "GenXSAnalyzer",
+    },
+    {
+        "process_name": "WtoMuNu-2Jets_Bin-0J_TuneCP5_13p6TeV_amcatnloFXFX-pythia8",
+        "cross_section": "18650.0",
+        "accuracy": "NLO",
+        "energy": "13.6",
+        "comment": "GenXSAnalyzer",
+    },
+    {
+        "process_name": "WtoMuNu-2Jets_Bin-1J_TuneCP5_13p6TeV_amcatnloFXFX-pythia8",
+        "cross_section": "3090.0",
+        "accuracy": "NLO",
+        "energy": "13.6",
+        "comment": "GenXSAnalyzer",
+    },
+    {
+        "process_name": "WtoMuNu-2Jets_Bin-2J_TuneCP5_13p6TeV_amcatnloFXFX-pythia8",
+        "cross_section": "1151.0",
+        "accuracy": "NLO",
+        "energy": "13.6",
+        "comment": "GenXSAnalyzer",
+    },
+    {
+        "process_name": "WtoTauNu-2Jets_Bin-0J_TuneCP5_13p6TeV_amcatnloFXFX-pythia8",
+        "cross_section": "18687.0",
+        "accuracy": "NLO",
+        "energy": "13.6",
+        "comment": "GenXSAnalyzer",
+    },
+    {
+        "process_name": "WtoTauNu-2Jets_Bin-1J_TuneCP5_13p6TeV_amcatnloFXFX-pythia8",
+        "cross_section": "3106.0",
+        "accuracy": "NLO",
+        "energy": "13.6",
+        "comment": "GenXSAnalyzer",
+    },
+    {
+        "process_name": "WtoTauNu-2Jets_Bin-2J_TuneCP5_13p6TeV_amcatnloFXFX-pythia8",
+        "cross_section": "1132.0",
+        "accuracy": "NLO",
+        "energy": "13.6",
+        "comment": "GenXSAnalyzer",
     },
     ###########################################################################
     #                                                                         #
@@ -1701,5 +1767,70 @@ xsection = [
         "accuracy": "LO",
         "energy": "13.6",
         "comment": "GenXSecAnalyzer",
+    },
+    ###########################################################################
+    #                                                                         #
+    # GJ                                                                      #
+    #                                                                         #
+    ###########################################################################
+    {
+        "id": "68d111b0f8a546d59c3d8304",
+        "process_name": "GJ-4Jets_Bin-HT-40to400-PTG-200_Par-dRGJ-0p25_TuneCP5_13p6TeV_madgraphMLM-pythia8",
+        "status": "new",
+        "cross_section": 43.76,
+        "total_uncertainty": 0.1321,
+        "accuracy": "LO",
+        "DAS": "/GJ-4Jets_Bin-HT-40to400-PTG-200_Par-dRGJ-0p25_TuneCP5_13p6TeV_madgraphMLM-pythia8/RunIII2024Summer24MiniAOD-140X_mcRun3_2024_realistic_v26-v2/MINIAODSIM",
+        "MCM": "GEN-RunIII2024Summer24MiniAOD-00045",
+        "equivalent_lumi": 22.85,
+        "fraction_negative_weight": 0,
+        "shower": "Pythia8",
+        "matrix_generator": "Madgraph",
+        "energy": "13.6",
+        "comments": "Automatically computed",
+        "modifiedOn": "2025-09-22 09:06:56",
+        "createdOn": "2025-09-22 09:06:56",
+        "modifiedBy": "dawei.fu@cern.ch",
+        "createdBy": "dawei.fu@cern.ch",
+    },
+    {
+        "id": "68d111aff8a546d59c3d82fd",
+        "process_name": "GJ-4Jets_Bin-HT-200to400-PTG-10to100_Par-dRGJ-0p25_TuneCP5_13p6TeV_madgraphMLM-pythia8",
+        "status": "new",
+        "cross_section": 5498,
+        "total_uncertainty": 16.21,
+        "accuracy": "LO",
+        "DAS": "/GJ-4Jets_Bin-HT-200to400-PTG-10to100_Par-dRGJ-0p25_TuneCP5_13p6TeV_madgraphMLM-pythia8/RunIII2024Summer24MiniAOD-140X_mcRun3_2024_realistic_v26-v2/MINIAODSIM",
+        "MCM": "GEN-RunIII2024Summer24MiniAOD-00040",
+        "equivalent_lumi": 0.1819,
+        "fraction_negative_weight": 0,
+        "shower": "Pythia8",
+        "matrix_generator": "Madgraph",
+        "energy": "13.6",
+        "comments": "Automatically computed",
+        "modifiedOn": "2025-09-22 09:06:55",
+        "createdOn": "2025-09-22 09:06:55",
+        "modifiedBy": "dawei.fu@cern.ch",
+        "createdBy": "dawei.fu@cern.ch",
+    },
+    {
+        "id": "68d111aff8a546d59c3d82fe",
+        "process_name": "GJ-4Jets_Bin-HT-400to600-PTG-100to200_Par-dRGJ-0p25_TuneCP5_13p6TeV_madgraphMLM-pythia8",
+        "status": "new",
+        "cross_section": 29.77,
+        "total_uncertainty": 0.08917,
+        "accuracy": "LO",
+        "DAS": "/GJ-4Jets_Bin-HT-400to600-PTG-100to200_Par-dRGJ-0p25_TuneCP5_13p6TeV_madgraphMLM-pythia8/RunIII2024Summer24MiniAOD-140X_mcRun3_2024_realistic_v26-v2/MINIAODSIM",
+        "MCM": "GEN-RunIII2024Summer24MiniAOD-00034",
+        "equivalent_lumi": 33.59,
+        "fraction_negative_weight": 0,
+        "shower": "Pythia8",
+        "matrix_generator": "Madgraph",
+        "energy": "13.6",
+        "comments": "Automatically computed",
+        "modifiedOn": "2025-09-22 09:06:55",
+        "createdOn": "2025-09-22 09:06:55",
+        "modifiedBy": "dawei.fu@cern.ch",
+        "createdBy": "dawei.fu@cern.ch",
     },
 ]

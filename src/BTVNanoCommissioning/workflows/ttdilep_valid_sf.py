@@ -23,11 +23,11 @@ from BTVNanoCommissioning.utils.array_writer import array_writer
 from BTVNanoCommissioning.utils.selection import (
     HLT_helper,
     jet_id,
-    mu_promptmvaid,
     ele_promptmvaid,
     ele_mvatightid,
-    mu_idiso,
     ele_cuttightid,
+    mu_promptmvaid,
+    mu_idiso,
     MET_filters,
 )
 
@@ -257,7 +257,13 @@ class NanoProcessor(processor.ProcessorABC):
         ####################
 
         # Configure SFs
-        weights = weight_manager(pruned_ev, self.SF_map, self.isSyst)
+        weights = weight_manager(
+            pruned_ev,
+            self.SF_map,
+            self.isSyst,
+            ttbar_reweights=getattr(self, "ttbar_reweights", "none"),
+            campaign=self._campaign,
+        )
         # Configure systematics
         if shift_name is None:
             systematics = ["nominal"] + list(weights.variations)
