@@ -382,6 +382,63 @@ def histo_writter(pruned_ev, output, weights, systematics, isSyst, SF_map):
                         weight=flatten(ak.broadcast_arrays(weight, discr)[0]),
                     )
 
+        """
+        # 2D correlation study
+        if nj == 1:
+            sel_jet, flav = pruned_ev.SelJet, genflavor
+            if "poslpt_vs_jetpt" in output.keys():
+                output["poslpt_vs_jetpt"].fill(
+                    syst=syst,
+                    flav=flatten(flav),
+                    leppt=pruned_ev.posl["pt"],
+                    jetpt=flatten(sel_jet["pt"]),
+                    weight=weight,
+                )
+            if "neglpt_vs_jetpt" in output.keys():
+                output["neglpt_vs_jetpt"].fill(
+                    syst=syst,
+                    flav=flatten(flav),
+                    leppt=pruned_ev.negl["pt"],
+                    jetpt=flatten(sel_jet["pt"]),
+                    weight=weight,
+                )
+        elif nj == 2:
+            sel_jet0, flav0 = pruned_ev.SelJet[:, 0], genflavor[:, 0]
+            sel_jet1, flav1 = pruned_ev.SelJet[:, 1], genflavor[:, 1]
+            if f"elept_vs_firstjetpt" in output.keys():
+                output[f"elept_vs_firstjetpt"].fill(
+                    syst=syst,
+                    flav=flatten(flav0),
+                    leppt=pruned_ev.SelElectron["pt"],
+                    jetpt=flatten(sel_jet0["pt"]),
+                    weight=weight,
+                )
+            if f"elept_vs_secondjetpt" in output.keys():
+                output[f"elept_vs_secondjetpt"].fill(
+                    syst=syst,
+                    flav=flatten(flav),
+                    leppt=pruned_ev.SelElectron["pt"],
+                    jetpt=flatten(sel_jet1["pt"]),
+                    weight=weight,
+                )
+            if f"mupt_vs_firstjetpt" in output.keys():
+                output[f"mupt_vs_firstjetpt"].fill(
+                    syst=syst,
+                    flav=flatten(flav0),
+                    leppt=pruned_ev.SelMuon["pt"],
+                    jetpt=flatten(sel_jet0["pt"]),
+                    weight=weight,
+                )
+            if f"mupt_vs_secondjetpt" in output.keys():
+                output[f"mupt_vs_secondjetpt"].fill(
+                    syst=syst,
+                    flav=flatten(flav),
+                    leppt=pruned_ev.SelMuon["pt"],
+                    jetpt=flatten(sel_jet1["pt"]),
+                    weight=weight,
+                )
+        """
+
         if "dr_poslnegl" in output.keys():
             # DY histograms
             output["dr_poslnegl"].fill(

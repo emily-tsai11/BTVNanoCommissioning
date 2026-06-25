@@ -21,6 +21,24 @@ def get_histograms(axes, **kwargs):
         hists[f"{i}_dxy"] = Hist.Hist(axes["syst"], axes["dxy"], Hist.storage.Weight())
         hists[f"{i}_dz"] = Hist.Hist(axes["syst"], axes["dz"], Hist.storage.Weight())
 
+        """
+        # 2D correlation study
+        hists[f"{i}pt_vs_firstjetpt"] = Hist.Hist(
+            axes["syst"],
+            axes["flav"],
+            Hist.axis.Regular(60, 0, 300, name="leppt", label=" $p_{T}$ [GeV]"),
+            Hist.axis.Regular(60, 0, 300, name="jetpt", label=" $p_{T}$ [GeV]"),
+            Hist.storage.Weight(),
+        )
+        hists[f"{i}pt_vs_secondjetpt"] = Hist.Hist(
+            axes["syst"],
+            axes["flav"],
+            Hist.axis.Regular(60, 0, 300, name="leppt", label=" $p_{T}$ [GeV]"),
+            Hist.axis.Regular(60, 0, 300, name="jetpt", label=" $p_{T}$ [GeV]"),
+            Hist.storage.Weight(),
+        )
+        """
+
     hists["top_pt"] = Hist.Hist(axes["syst"], axes["jpt"], Hist.storage.Weight())
     hists["antitop_pt"] = Hist.Hist(axes["syst"], axes["jpt"], Hist.storage.Weight())
 

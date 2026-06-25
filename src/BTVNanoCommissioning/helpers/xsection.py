@@ -795,6 +795,72 @@ xsection = [
         "energy": "13.6",
         "comment": "https://twiki.cern.ch/twiki/bin/viewauth/CMS/MATRIXCrossSectionsat13p6TeV with PDG 2025 values",
     },
+    # ----------------------------------------------------------------------- #
+    # Binned by jets & lepton: NLO                                            #
+    # ----------------------------------------------------------------------- #
+    {
+        "process_name": "WtoENu-2Jets_Bin-0J_TuneCP5_13p6TeV_amcatnloFXFX-pythia8",
+        "cross_section": "18620.0",
+        "accuracy": "NLO",
+        "energy": "13.6",
+        "comment": "GenXSAnalyzer",
+    },
+    {
+        "process_name": "WtoENu-2Jets_Bin-1J_TuneCP5_13p6TeV_amcatnloFXFX-pythia8",
+        "cross_section": "3015.0",
+        "accuracy": "NLO",
+        "energy": "13.6",
+        "comment": "GenXSAnalyzer",
+    },
+    {
+        "process_name": "WtoENu-2Jets_Bin-2J_TuneCP5_13p6TeV_amcatnloFXFX-pythia8",
+        "cross_section": "1161.0",
+        "accuracy": "NLO",
+        "energy": "13.6",
+        "comment": "GenXSAnalyzer",
+    },
+    {
+        "process_name": "WtoMuNu-2Jets_Bin-0J_TuneCP5_13p6TeV_amcatnloFXFX-pythia8",
+        "cross_section": "18650.0",
+        "accuracy": "NLO",
+        "energy": "13.6",
+        "comment": "GenXSAnalyzer",
+    },
+    {
+        "process_name": "WtoMuNu-2Jets_Bin-1J_TuneCP5_13p6TeV_amcatnloFXFX-pythia8",
+        "cross_section": "3090.0",
+        "accuracy": "NLO",
+        "energy": "13.6",
+        "comment": "GenXSAnalyzer",
+    },
+    {
+        "process_name": "WtoMuNu-2Jets_Bin-2J_TuneCP5_13p6TeV_amcatnloFXFX-pythia8",
+        "cross_section": "1151.0",
+        "accuracy": "NLO",
+        "energy": "13.6",
+        "comment": "GenXSAnalyzer",
+    },
+    {
+        "process_name": "WtoTauNu-2Jets_Bin-0J_TuneCP5_13p6TeV_amcatnloFXFX-pythia8",
+        "cross_section": "18687.0",
+        "accuracy": "NLO",
+        "energy": "13.6",
+        "comment": "GenXSAnalyzer",
+    },
+    {
+        "process_name": "WtoTauNu-2Jets_Bin-1J_TuneCP5_13p6TeV_amcatnloFXFX-pythia8",
+        "cross_section": "3106.0",
+        "accuracy": "NLO",
+        "energy": "13.6",
+        "comment": "GenXSAnalyzer",
+    },
+    {
+        "process_name": "WtoTauNu-2Jets_Bin-2J_TuneCP5_13p6TeV_amcatnloFXFX-pythia8",
+        "cross_section": "1132.0",
+        "accuracy": "NLO",
+        "energy": "13.6",
+        "comment": "GenXSAnalyzer",
+    },
     ###########################################################################
     #                                                                         #
     # QCD                                                                     #
