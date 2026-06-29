@@ -2809,17 +2809,20 @@ def eleSFs(ele, correct_map, weights, syst=True, isHLT=False):
                             sfs_down = np.where(masknone, 1.0, sfs_down)
 
                     else:
-                        sfs_low = np.where(
-                            (ele.pt < 20.0) & ~masknone,
-                            correct_map["EGM"][sf.split(" ")[2]].evaluate(
-                                sf.split(" ")[1],
-                                "sf",
-                                "RecoBelow20",
-                                ele_etaSC,
-                                ele_pt_low,
-                            ),
-                            1.0,
-                        )
+                        if "Prompt25" in correct_map["campaign"]:
+                            sfs_low = np.ones_like(ele_pt_low)
+                        else:
+                            sfs_low = np.where(
+                                (ele.pt < 20.0) & ~masknone,
+                                correct_map["EGM"][sf.split(" ")[2]].evaluate(
+                                    sf.split(" ")[1],
+                                    "sf",
+                                    "RecoBelow20",
+                                    ele_etaSC,
+                                    ele_pt_low,
+                                ),
+                                1.0,
+                            )
                         sfs_high = np.where(
                             (ele.pt >= 75.0) & ~masknone,
                             correct_map["EGM"][sf.split(" ")[2]].evaluate(
@@ -2841,28 +2844,32 @@ def eleSFs(ele, correct_map, weights, syst=True, isHLT=False):
                         sfs = np.where(masknone, 1.0, sfs)
 
                         if syst:
-                            sfs_up_low = np.where(
-                                (ele.pt < 20.0) & ~masknone,
-                                correct_map["EGM"][sf.split(" ")[2]].evaluate(
-                                    sf.split(" ")[1],
-                                    "sfup",
-                                    "RecoBelow20",
-                                    ele_etaSC,
-                                    ele_pt_low,
-                                ),
-                                0.0,
-                            )
-                            sfs_down_low = np.where(
-                                (ele.pt < 20.0) & ~masknone,
-                                correct_map["EGM"][sf.split(" ")[2]].evaluate(
-                                    sf.split(" ")[1],
-                                    "sfdown",
-                                    "RecoBelow20",
-                                    ele_etaSC,
-                                    ele_pt_low,
-                                ),
-                                0.0,
-                            )
+                            if "Prompt25" in correct_map["campaign"]:
+                                sfs_up_low = np.ones_like(ele_pt_low)
+                                sfs_down_low = np.ones_like(ele_pt_low)
+                            else:
+                                sfs_up_low = np.where(
+                                    (ele.pt < 20.0) & ~masknone,
+                                    correct_map["EGM"][sf.split(" ")[2]].evaluate(
+                                        sf.split(" ")[1],
+                                        "sfup",
+                                        "RecoBelow20",
+                                        ele_etaSC,
+                                        ele_pt_low,
+                                    ),
+                                    0.0,
+                                )
+                                sfs_down_low = np.where(
+                                    (ele.pt < 20.0) & ~masknone,
+                                    correct_map["EGM"][sf.split(" ")[2]].evaluate(
+                                        sf.split(" ")[1],
+                                        "sfdown",
+                                        "RecoBelow20",
+                                        ele_etaSC,
+                                        ele_pt_low,
+                                    ),
+                                    0.0,
+                                )
                             sfs_up_high = np.where(
                                 (ele.pt >= 75.0) & ~masknone,
                                 correct_map["EGM"][sf.split(" ")[2]].evaluate(
