@@ -2537,18 +2537,17 @@ def btagSFs(event, correct_map, weights, SFtype, syst=False):
                         jet_2Dbin = ak.fill_none(jet.btagUParTAK42Dbin, 0)
                     elif SFtype == "PNetBC":
                         jet_2Dbin = ak.fill_none(jet.btagPNet2Dbin, 0)
+                    jet_2Dbin = ak.where(jet_2Dbin == -1, 0, jet_2Dbin)
+                    masknone = masknone | (jet_2Dbin == -1)
                     jet_eta = ak.fill_none(jet.eta, 0)
                     jet_pt = ak.fill_none(jet.pt, 0)
-                    if SFtype == "PNetBC":
-                        jet_2Dbin = ak.where(jet_2Dbin == -1, 0, jet_2Dbin)
-                        masknone = masknone | (jet_2Dbin == -1)
                     tmp_sfs = np.where(
                         masknone,
                         1.0,
                         correct_map["ctag"]["UParTAK4_pseudocontinuous"].evaluate(
                             "central",
                             jet.hadronFlavour,
-                            jet.btagUParTAK42Dbin,
+                            jet_2Dbin,
                             jet_eta,
                             jet_pt,
                         ),
@@ -2560,7 +2559,7 @@ def btagSFs(event, correct_map, weights, SFtype, syst=False):
                             correct_map["ctag"]["UParTAK4_pseudocontinuous"].evaluate(
                                 f"up_{systlist[i]}",
                                 jet.hadronFlavour,
-                                jet.btagUParTAK42Dbin,
+                                jet_2Dbin,
                                 jet_eta,
                                 jet_pt,
                             ),
@@ -2571,7 +2570,7 @@ def btagSFs(event, correct_map, weights, SFtype, syst=False):
                             correct_map["ctag"]["UParTAK4_pseudocontinuous"].evaluate(
                                 f"down_{systlist[i]}",
                                 jet.hadronFlavour,
-                                jet.btagUParTAK42Dbin,
+                                jet_2Dbin,
                                 jet_eta,
                                 jet_pt,
                             ),
@@ -2931,28 +2930,32 @@ def eleSFs(ele, correct_map, weights, syst=True, isHLT=False):
                             sfs_down = np.where(masknone, 1.0, sfs_down)
 
                         else:
-                            sfs_up_low = np.where(
-                                (ele.pt < 20.0) & ~masknone,
-                                correct_map["EGM"][sf_id].evaluate(
-                                    sf_campaign,
-                                    "sfup",
-                                    "RecoBelow20",
-                                    ele_etaSC,
-                                    ele_pt_low,
-                                ),
-                                0.0,
-                            )
-                            sfs_down_low = np.where(
-                                (ele.pt < 20.0) & ~masknone,
-                                correct_map["EGM"][sf_id].evaluate(
-                                    sf_campaign,
-                                    "sfdown",
-                                    "RecoBelow20",
-                                    ele_etaSC,
-                                    ele_pt_low,
-                                ),
-                                0.0,
-                            )
+                            if "Prompt25" in correct_map["campaign"]:
+                                sfs_up_low = np.ones_like(ele_pt_low)
+                                sfs_down_low = np.ones_like(ele_pt_low)
+                            else:
+                                sfs_up_low = np.where(
+                                    (ele.pt < 20.0) & ~masknone,
+                                    correct_map["EGM"][sf_id].evaluate(
+                                        sf_campaign,
+                                        "sfup",
+                                        "RecoBelow20",
+                                        ele_etaSC,
+                                        ele_pt_low,
+                                    ),
+                                    0.0,
+                                )
+                                sfs_down_low = np.where(
+                                    (ele.pt < 20.0) & ~masknone,
+                                    correct_map["EGM"][sf_id].evaluate(
+                                        sf_campaign,
+                                        "sfdown",
+                                        "RecoBelow20",
+                                        ele_etaSC,
+                                        ele_pt_low,
+                                    ),
+                                    0.0,
+                                )
                             sfs_up_high = np.where(
                                 (ele.pt >= 75.0) & ~masknone,
                                 correct_map["EGM"][sf_id].evaluate(

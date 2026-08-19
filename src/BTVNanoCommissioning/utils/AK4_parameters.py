@@ -740,7 +740,7 @@ correction_config = {
                 "Run2025F": "Summer24Prompt25_V3",
                 "Run2025G": "Summer24Prompt25_V3",
             },
-            "jetveto": {"Winter25Prompt25_RunCDEFG_V1": "jetvetomap"},
+            "jetveto": {"Summer24Prompt25_RunCDEFG_V1": "jetvetomap"},
             # "MUO": {
             #     "mu_ID": "NUM_TightID_DEN_TrackerMuons",
             #     "mu_Iso": "NUM_TightPFIso_DEN_TightID",
@@ -760,11 +760,11 @@ correction_config = {
             # JME: data L2L3Residual from Winter25 JME era.
             # JME_MC: MC truth JECs must come from the Summer24 era (L2Relative differs).
             # jetveto: jetvetomap from Winter25 JME era.
-            "cvmfs_override": {
-                "JME": "Run3-25Prompt-Summer24-NanoAODv15",
-                "JME_MC": "Run3-25Prompt-Summer24-NanoAODv15",
-                "jetveto": "Run3-25Prompt-Summer24-NanoAODv15",
-            },
+            # "cvmfs_override": {
+            #     "JME": "Run3-25Prompt-Summer24-NanoAODv15",
+            #     "JME_MC": "Run3-25Prompt-Summer24-NanoAODv15",
+            #     "jetveto": "Run3-25Prompt-Summer24-NanoAODv15",
+            # },
         },
         "tt_semilep_mu": {
             "MUO": {
