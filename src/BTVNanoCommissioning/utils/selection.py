@@ -383,7 +383,7 @@ _jet_pt_bins = [
     (120, 10000),
 ]
 btag_wp_dict = {
-    "2016_2016preVFP-UL": {
+    "2016preVFP_2016preVFP-UL": {
         "UParTAK4": {
             "b": {
                 "No": 0.0,
@@ -402,7 +402,7 @@ btag_wp_dict = {
             },
         },
     },
-    "2016_2016postVFP-UL": {
+    "2016postVFP_2016postVFP-UL": {
         "UParTAK4": {
             "b": {
                 "No": 0.0,
