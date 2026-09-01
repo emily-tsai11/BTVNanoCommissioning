@@ -214,7 +214,7 @@ class NanoProcessor(processor.ProcessorABC):
             },
             with_name="PtEtaPhiMLorentzVector",
         )
-        req_MET = event_MET.pt > 20.0
+        req_MET = event_MET.pt > 50.0
         req_metfilter = MET_filters(events, self._campaign)
 
         # Cut on tranverse W mass
